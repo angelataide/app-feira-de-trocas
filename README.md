@@ -29,17 +29,18 @@ Criar uma plataforma simples, intuitiva e funcional para permitir que usuários:
 | Camada         | Tecnologia             |
 |----------------|------------------------|
 | **Frontend**   | ReactJS                |
-| **Estilo**     | TailwindCSS (ou outro escolhido) |
+| **Estilo**     | (qual for escolhido)   |
 | **Backend**    | Node.js, Express       |
 | **ORM**        | Prisma ORM             |
 | **Banco de Dados** | PostgreSQL ou SQLite |
 
 ---
 
-## 🚀 Como Executar o Projeto
 
 ### 🔧 Pré-requisitos
 
-- Node.js
-- NPM
-- PostgreSQL ou SQLite
+- Node.js com Express para gerenciamento de rotas.
+- Prisma ORM para manipulação de banco de dados (PostgreSQL, SQLite ou
+outro à escolha).
+- API REST com endpoints para CRUD de itens, usuários e propostas de troca.
+
