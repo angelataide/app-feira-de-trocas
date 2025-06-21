@@ -1,0 +1,13 @@
+{
+    "name": "app-feira-de-trocas",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "frontend": "cd frontend && npm run dev",
+        "backend": "cd backend && npm run dev",
+        "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.0"
+    }
+}
