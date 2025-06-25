@@ -25,7 +25,6 @@ Environment variables
 .env.production.local
 
 Prisma
-prisma/migrations/
 prisma/dev.db
 
 OS files
