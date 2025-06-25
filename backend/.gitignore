@@ -75,3 +75,4 @@ public/assets/css/
 
 Optional: Storybook build folder
 .storybook-static/
+/src/generated/prisma
