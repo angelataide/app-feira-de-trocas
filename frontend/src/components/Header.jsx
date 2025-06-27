@@ -13,9 +13,6 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <HeaderLogo>TrocAí</HeaderLogo>
-      <Nav>
-        <NavLink href="#">Itens Disponíveis</NavLink>
-      </Nav>
       <HeaderActions>
         <OutlineButton href="#">Entrar</OutlineButton>
         <FilledButton href="#">Cadastrar</FilledButton>
