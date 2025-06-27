@@ -29,9 +29,7 @@ const createUsuario = async (userData) => {
 };
 
 // Função para buscar todos os usuários
-const getAllUsuarios = async () => {
-  return userRepository.findAll();
-};
+const getAllUsuarios = async () => userRepository.findAll();
 
 // Função para buscar um usuário pelo id
 const getUsuarioById = async (id) => {

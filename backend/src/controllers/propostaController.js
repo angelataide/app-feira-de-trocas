@@ -4,7 +4,8 @@ import propostaService from '../services/propostaService.js';
 // Função para criar uma nova proposta de troca
 const create = async (req, res) => {
   try {
-    const proposta = await propostaService.createProposta(req.body); // Cria a proposta usando o service
+    // Cria a proposta usando o serviço
+    const proposta = await propostaService.createProposta(req.body);
     res.status(201).json(proposta); // Retorna a proposta criada
   } catch (error) {
     res.status(400).json({ message: error.message }); // Retorna erro se algo der errado
@@ -20,11 +21,11 @@ const responder = async (req, res) => {
     if (!['ACEITA', 'RECUSADA', 'CANCELADA'].includes(status)) {
       return res.status(400).json({ message: 'Status inválido.' }); // Valida o status
     }
-
-    const proposta = await propostaService.responderProposta(id, status); // Atualiza o status da proposta
-    res.status(200).json(proposta); // Retorna a proposta atualizada
+    // Atualiza o status da proposta
+    const proposta = await propostaService.responderProposta(id, status);
+    return res.status(200).json(proposta); // Retorna a proposta atualizada
   } catch (error) {
-    res.status(400).json({ message: error.message }); // Retorna erro se algo der errado
+    return res.status(400).json({ message: error.message }); // Retorna erro se algo der errado
   }
 };
 

@@ -15,23 +15,22 @@ const create = async (itemData) => {
 };
 
 // Função para buscar todos os itens
-const findAll = async () => {
-  return prisma.item.findMany({
+const findAll = async () =>
+  prisma.item.findMany({
     include: {
-      usuario: { // Inclui dados do usuário dono do item
+      usuario: {
+        // Inclui dados do usuário dono do item
         select: { id: true, nome: true, email: true },
       },
     },
   });
-};
 
 // Função para buscar um item pelo id
-const findById = async (id) => {
-  return prisma.item.findUnique({
+const findById = async (id) =>
+  prisma.item.findUnique({
     where: { id: parseInt(id, 10) },
     include: { usuario: true },
   });
-};
 
 // Função para atualizar um item
 const update = async (id, itemData) => {
@@ -47,11 +46,10 @@ const update = async (id, itemData) => {
 };
 
 // Função para remover um item
-const remove = async (id) => {
-  return prisma.item.delete({
+const remove = async (id) =>
+  prisma.item.delete({
     where: { id: parseInt(id, 10) },
   });
-};
 
 // Exporto as funções para serem usadas no service
 export default {

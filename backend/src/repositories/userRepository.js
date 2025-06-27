@@ -2,29 +2,40 @@
 import prisma from '../prismaClient.js';
 
 // Função para criar um novo usuário no banco
-const create = async (data) => {
-  return prisma.usuario.create({ data });
-};
+const create = async (data) => prisma.usuario.create({ data });
 
 // Função para buscar um usuário pelo email
-const findByEmail = async (email) => {
-  return prisma.usuario.findUnique({ where: { email } });
-};
+const findByEmail = async (email) => prisma.usuario.findUnique({ where: { email } });
 
 // Função para buscar todos os usuários
-const findAll = async () => {
-  return prisma.usuario.findMany({
-    select: { id: true, nome: true, email: true, telefone: true, itens: true },
+const findAll = async () =>
+  prisma.usuario.findMany({
+    select: {
+      id: true,
+      nome: true,
+      email: true,
+      telefone: true,
+      itens: true,
+    },
   });
-};
 
 // Função para buscar um usuário pelo id
-const findById = async (id) => {
-  return prisma.usuario.findUnique({
+const findById = async (id) =>
+  prisma.usuario.findUnique({
     where: { id: parseInt(id, 10) },
-    select: { id: true, nome: true, email: true, telefone: true, itens: true },
+    select: {
+      id: true,
+      nome: true,
+      email: true,
+      telefone: true,
+      itens: true,
+    },
   });
-};
 
 // Exporto as funções para serem usadas no service
-export default { create, findByEmail, findAll, findById };
+export default {
+  create,
+  findByEmail,
+  findAll,
+  findById,
+};

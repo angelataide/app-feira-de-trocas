@@ -14,9 +14,7 @@ const createItem = async (itemData) => {
 };
 
 // Função para buscar todos os itens
-const getAllItems = async () => {
-  return itemRepository.findAll();
-};
+const getAllItems = async () => itemRepository.findAll();
 
 // Função para buscar um item pelo id
 const getItemById = async (id) => {
