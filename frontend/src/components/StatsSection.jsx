@@ -1,24 +1,12 @@
 import React from 'react';
-import { StatsSectionWrapper, StatItem, StatNumber, StatText } from './styles';
+// import { StatSectionWrapper, StatItem, StatNumber, StatText } from './styles'; // Remova ou comente esta linha
 
 const StatsSection = () => {
   return (
-    <StatsSectionWrapper>
-      <StatItem>
-        <StatNumber>500+</StatNumber>
-        <StatText>Itens Trocados</StatText>
-      </StatItem>
-      <StatItem>
-        <StatNumber>200+</StatNumber>
-        <StatText>Usuários Ativos</StatText>
-      </StatItem>
-      <StatItem>
-        <StatNumber>50+</StatNumber>
-        <StatText>Comunidades</StatText>
-      </StatItem>
-    </StatsSectionWrapper>
+    
+    null
+    
   );
 };
 
 export default StatsSection;
-
