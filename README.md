@@ -7,6 +7,7 @@ Uma aplicação web que conecta pessoas de uma mesma comunidade para facilitar t
 ## 📌 Objetivo
 
 Criar uma plataforma simples, intuitiva e funcional para permitir que usuários:
+
 - Cadastrem itens que desejam trocar
 - Visualizem itens disponíveis com filtros e busca
 - Realizem propostas de troca entre si
@@ -26,21 +27,19 @@ Criar uma plataforma simples, intuitiva e funcional para permitir que usuários:
 
 ## 🧱 Tecnologias Utilizadas
 
-| Camada         | Tecnologia             |
-|----------------|------------------------|
-| **Frontend**   | ReactJS                |
-| **Estilo**     | (qual for escolhido)   |
-| **Backend**    | Node.js, Express       |
-| **ORM**        | Prisma ORM             |
+| Camada             | Tecnologia           |
+| ------------------ | -------------------- |
+| **Frontend**       | ReactJS              |
+| **Estilo**         | (qual for escolhido) |
+| **Backend**        | Node.js, Express     |
+| **ORM**            | Prisma ORM           |
 | **Banco de Dados** | PostgreSQL ou SQLite |
 
 ---
-
 
 ### 🔧 Pré-requisitos
 
 - Node.js com Express para gerenciamento de rotas.
 - Prisma ORM para manipulação de banco de dados (PostgreSQL, SQLite ou
-outro à escolha).
+  outro à escolha).
 - API REST com endpoints para CRUD de itens, usuários e propostas de troca.
-
