@@ -1,5 +1,5 @@
 // Em src/components/HeroSection.jsx
-import React from 'react'; // Adicione a importação de React
+import React from 'react';
 import ArrowRight from "./ArrowRight.jsx"; 
 import {
     HeroSectionWrapper,
@@ -10,7 +10,7 @@ import {
     PrimaryButton,
     SecondaryButton
   } from './styles';
-import ExchangeIcon from './ExchangeIcon.jsx'; // Adicione a extensão .jsx se necessário
+import ExchangeIcon from './ExchangeIcon.jsx'; 
 
 
 const HeroSection = () => {
@@ -29,7 +29,7 @@ const HeroSection = () => {
       </HeroSubtitle>
       <HeroButtons>
         <PrimaryButton href="#">
-          Ver Itens Disponíveis <ArrowRight /> {/* CORREÇÃO: Remova o texto → */}
+          Ver Itens Disponíveis <ArrowRight /> 
         </PrimaryButton>
         <SecondaryButton href="#">
           Começar a Trocar
