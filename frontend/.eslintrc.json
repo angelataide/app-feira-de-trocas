@@ -1,33 +1,22 @@
 {
     "env": {
-        "node": true,
+        "browser": true,
         "es2021": true
     },
-    "extends": ["airbnb-base", "prettier"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:prettier/recommended"
+    ],
     "parserOptions": {
+        "ecmaFeatures": { "jsx": true },
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "plugins": ["react"],
     "rules": {
-        "indent": ["error", 4],
-        "linebreak-style": ["error", "unix"],
-        "eol-last": ["error", "always"],
-        "no-trailing-spaces": ["error"],
-        "no-console": "off",
-        "import/extensions": [
-            "error",
-            "ignorePackages",
-            {
-                ".js": "always"
-            }
-        ],
-        "import/no-extraneous-dependencies": [
-            "error",
-            {
-                "devDependencies": true
-            }
-        ],
-
+        "react/prop-types": "off",
         "object-curly-newline": [
             "error",
             {
@@ -42,9 +31,8 @@
                     "consistent": true
                 },
                 "ImportDeclaration": {
-                    "minProperties": 2,
                     "multiline": true,
-                    "consistent": true
+                    "minProperties": 9999
                 },
                 "ExportDeclaration": {
                     "minProperties": 2,
@@ -53,5 +41,10 @@
                 }
             }
         ]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
