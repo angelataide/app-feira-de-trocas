@@ -12,13 +12,15 @@ import {
 const Header = () => {
   return (
     <HeaderWrapper>
-      <HeaderLogo>TrocAí</HeaderLogo>
+      <HeaderLogo>
+        <img src="./src/assets/logo0.png" alt="Logo" />
+      </HeaderLogo>
       <Nav>
         <NavLink href="#">Itens Disponíveis</NavLink>
       </Nav>
       <HeaderActions>
-        <OutlineButton href="#">Entrar</OutlineButton>
-        <FilledButton href="#">Cadastrar</FilledButton>
+        <OutlineButton href="/login">Entrar</OutlineButton>
+        <FilledButton href="/cadastro">Cadastrar</FilledButton>
       </HeaderActions>
     </HeaderWrapper>
   );

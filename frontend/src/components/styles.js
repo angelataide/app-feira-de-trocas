@@ -6,7 +6,7 @@ export const HeaderWrapper = styled.header`
   max-width: 1200px;
   padding: 20px 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 
   @media (max-width: 768px) {
@@ -20,12 +20,17 @@ export const HeaderLogo = styled.div`
   font-size: 24px;
   font-weight: 700;
   color: var(--main-blue);
+  img{
+    width: 100%;
+    height: 80px;
+
+  }
 `;
 
 export const Nav = styled.nav`
   flex-grow: 1;
   text-align: center;
-  
+
   @media (max-width: 768px) {
     margin: 10px 0;
   }
@@ -280,7 +285,7 @@ export const PrimaryAltButton = styled.a`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  
+
   background-color: var(--main-green);
   color: #fff;
   border: 2px solid var(--main-green);
