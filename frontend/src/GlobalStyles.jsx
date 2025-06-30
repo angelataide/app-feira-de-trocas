@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -28,6 +28,6 @@ const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     line-height: 1.6;
   }
-`;
+`
 
-export default GlobalStyles;
+export default GlobalStyles

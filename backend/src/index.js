@@ -24,5 +24,5 @@ app.use('/api', propostaRoutes); // Rotas de propostas
 
 // Inicia o servidor e exibe mensagem no console
 app.listen(port, () => {
-  console.log(`🚀 Servidor do TrocaAi rodando na porta ${port}`);
+    console.log(`🚀 Servidor do TrocaAi rodando na porta ${port}`);
 });

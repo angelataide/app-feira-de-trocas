@@ -1,12 +1,8 @@
-import React from 'react';
+import React from 'react'
 // import { StatSectionWrapper, StatItem, StatNumber, StatText } from './styles'; // Remova ou comente esta linha
 
 const StatsSection = () => {
-  return (
-    
-    null
-    
-  );
-};
+    return null
+}
 
-export default StatsSection;
+export default StatsSection
