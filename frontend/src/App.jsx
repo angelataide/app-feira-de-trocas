@@ -1,39 +1,24 @@
-import React from 'react'
-import styled from 'styled-components'
-import Header from './components/Header.jsx'
-import HeroSection from './components/HeroSection.jsx'
-import StatsSection from './components/StatsSection.jsx' // Importação adicionada
-import HighlightSection from './components/HighlightSection.jsx'
-import HowItWorksSection from './components/HowItWorksSection.jsx'
-import GlobalStyles from './GlobalStyles.jsx'
-import Footer from './components/Footer.tsx'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-const MainContainer = styled.main`
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-`
+import HomePage from './pages/HomePage.jsx'
+import Login from './pages/login.jsx'
+import Cadastro from './pages/Cadastro.jsx'
+import Itens from './pages/itens.jsx'
 
 function App() {
     return (
-        <>
-            <GlobalStyles />
-            <Header />
-            <MainContainer>
-                <HeroSection />
-                {/* <StatsSection /> <-- Removido, conforme sua solicitação */}
-                <HighlightSection />
-                <HowItWorksSection />
-            </MainContainer>
-            <Footer />
-        </>
+        <Router>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/cadastro" element={<Cadastro />} />
+                <Route path="/itens" element={<Itens />} />
+                <Route
+                    path="*"
+                    element={<h1>404 - Página não encontrada</h1>}
+                />
+            </Routes>
+        </Router>
     )
 }
 
