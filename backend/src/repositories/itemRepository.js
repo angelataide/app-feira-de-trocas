@@ -1,19 +1,22 @@
 /* eslint-disable no-param-reassign */
+import prisma from '../database/prismaClient.js';
 
-// Importo o prisma para acessar o banco de dados
-import prisma from '../prismaClient.js';
-
-// Função para criar um novo item no banco
 const create = async (itemData) => {
     const {
-        nome, descricao, categoria, usuarioId
+        nome,
+        descricao,
+        categoria,
+        usuarioId,
+        //
     } = itemData;
     return prisma.item.create({
         data: {
-            nome_item: nome, // Mapeia o campo para o banco
+            nome_item: nome,
             descricao,
             categoria,
-            usuario: { connect: { id: usuarioId } }, // Conecta com o usuário dono
+            usuario: {
+                connect: { id: usuarioId },
+            },
         },
     });
 };
@@ -25,7 +28,9 @@ const findAll = async () =>
             usuario: {
                 // Inclui dados do usuário dono do item
                 select: {
-                    id: true, nome: true, email: true
+                    id: true,
+                    nome: true,
+                    email: true,
                 },
             },
         },
