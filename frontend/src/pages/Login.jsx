@@ -1,7 +1,5 @@
-function Login(){
-    return(
-        <h1>Pagina de Login</h1>
-    )
+function Login() {
+    return <h1>Pagina de Login</h1>
 }
 
-export default Login;
+export default Login

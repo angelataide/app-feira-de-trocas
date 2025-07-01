@@ -1,12 +1,11 @@
-import React from "react";
-import styled from "styled-components"; //
-import Header from "../components/Header.jsx"; // Importa o componente Header
-import HeroSection from "../components/HeroSection.jsx";
-import StatsSection from "../components/StatsSection.jsx";
-import HighlightSection from "../components/HighlightSection.jsx";
-import HowItWorksSection from "../components/HowItWorksSection.jsx";
-import GlobalStyles from "../GlobalStyles.jsx";
-
+import React from 'react'
+import styled from 'styled-components' //
+import Header from '../components/Header.jsx' // Importa o componente Header
+import HeroSection from '../components/HeroSection.jsx'
+import StatsSection from '../components/StatsSection.jsx'
+import HighlightSection from '../components/HighlightSection.jsx'
+import HowItWorksSection from '../components/HowItWorksSection.jsx'
+import GlobalStyles from '../GlobalStyles.jsx'
 
 const MainContainer = styled.main`
     flex-grow: 1;
@@ -19,7 +18,7 @@ const MainContainer = styled.main`
     width: 100%;
     max-width: 1200px;
     margin: 0 auto; /* Centraliza o contêiner na tela */
-`;
+`
 
 function HomePage() {
     return (
@@ -32,9 +31,8 @@ function HomePage() {
                 <HighlightSection />
                 <HowItWorksSection />
             </MainContainer>
-
         </>
-    );
+    )
 }
 
-export default HomePage;
+export default HomePage

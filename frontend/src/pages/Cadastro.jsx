@@ -1,6 +1,4 @@
-function Cadastro (){
-    return(
-        <h1>Pagina de Cadastro</h1>
-    )
+function Cadastro() {
+    return <h1>Pagina de Cadastro</h1>
 }
-export default Cadastro;
+export default Cadastro
