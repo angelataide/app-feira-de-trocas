@@ -6,7 +6,10 @@ const create = async (data) => prisma.usuario.create({ data });
 
 // Função para buscar um usuário pelo email
 const findByEmail = async (email) =>
-    prisma.usuario.findUnique({ where: { email } });
+    prisma.usuario.findUnique({
+        where: { email },
+        //
+    });
 
 // Função para buscar todos os usuários
 const findAll = async () =>

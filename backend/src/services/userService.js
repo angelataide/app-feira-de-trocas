@@ -1,12 +1,11 @@
 // Importo o serviço de usuário para lidar com regras de negócio
 import bcrypt from 'bcryptjs';
+import JWT from 'jsonwebtoken';
 import userRepository from '../repositories/userRepository.js';
 
 // Função para criar um novo usuário
 const createUsuario = async (userData) => {
-    const {
-        nome, email, senha, telefone
-    } = userData;
+    const { nome, email, senha, telefone } = userData;
 
     // Verifico se já existe um usuário com esse email
     const userExists = await userRepository.findByEmail(email);
@@ -42,7 +41,33 @@ const getUsuarioById = async (id) => {
     return user;
 };
 
+const loginUser = async (userData) => {
+    const {
+        email,
+        senha,
+        //
+    } = userData;
+    const usuario = await userRepository.findByEmail(email);
+
+    if (!usuario) {
+        throw new Error('Usuário não encontrado.');
+    }
+
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+    if (!senhaValida) {
+        throw new Error('E-mail/Senha incorreta');
+    }
+    delete usuario.senha;
+    const token = JWT.sign(usuario, process.env.JWT_SECRET_TOKEN, {expiresIn: '1h'});
+
+    return token;
+};
+
 // Exporto as funções para serem usadas no controller
 export default {
-    createUsuario, getAllUsuarios, getUsuarioById
+    createUsuario,
+    getAllUsuarios,
+    getUsuarioById,
+    loginUser,
 };

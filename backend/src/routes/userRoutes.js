@@ -13,5 +13,7 @@ router.get('/users', userController.getAll);
 // Rota para buscar um usuário pelo id
 router.get('/users/:id', userController.getById);
 
+router.post('/login', userController.loginUser);
+
 // Exporto o router para ser usado no index.js
 export default router;
