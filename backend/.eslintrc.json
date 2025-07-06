@@ -9,10 +9,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": ["error", 4],
-        "linebreak-style": ["error", "unix"],
-        "eol-last": ["error", "always"],
-        "no-trailing-spaces": ["error"],
         "no-console": "off",
         "import/extensions": [
             "error",
@@ -25,32 +21,6 @@
             "error",
             {
                 "devDependencies": true
-            }
-        ],
-
-        "object-curly-newline": [
-            "error",
-            {
-                "ObjectExpression": {
-                    "minProperties": 2,
-                    "multiline": true,
-                    "consistent": true
-                },
-                "ObjectPattern": {
-                    "minProperties": 2,
-                    "multiline": true,
-                    "consistent": true
-                },
-                "ImportDeclaration": {
-                    "minProperties": 2,
-                    "multiline": true,
-                    "consistent": true
-                },
-                "ExportDeclaration": {
-                    "minProperties": 2,
-                    "multiline": true,
-                    "consistent": true
-                }
             }
         ]
     }
