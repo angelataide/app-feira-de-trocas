@@ -1,5 +1,5 @@
 // Importo o prisma para acessar o banco de dados
-import prisma from '../prismaClient.js';
+import prisma from '../database/prismaClient.js';
 
 // Função para criar uma nova proposta no banco
 const create = async (data) => {

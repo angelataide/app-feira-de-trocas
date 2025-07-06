@@ -1,5 +1,5 @@
 // Importo o prisma para acessar o banco de dados
-import prisma from '../prismaClient.js';
+import prisma from '../database/prismaClient.js';
 
 // Função para criar um novo usuário no banco
 const create = async (data) => prisma.usuario.create({ data });
