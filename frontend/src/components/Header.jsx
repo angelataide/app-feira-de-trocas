@@ -2,8 +2,6 @@ import React from 'react'
 import {
     HeaderWrapper,
     HeaderLogo,
-    Nav,
-    NavLink,
     HeaderActions,
     OutlineButton,
     FilledButton,
@@ -14,8 +12,8 @@ const Header = () => {
         <HeaderWrapper>
             <HeaderLogo>TrocAí</HeaderLogo>
             <HeaderActions>
-                <OutlineButton href="#">Entrar</OutlineButton>
-                <FilledButton href="#">Cadastrar</FilledButton>
+                <OutlineButton href="/login">Entrar</OutlineButton>
+                <FilledButton href="/cadastro">Cadastrar</FilledButton>
             </HeaderActions>
         </HeaderWrapper>
     )
