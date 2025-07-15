@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import HomePage from './pages/HomePage.jsx'
-import Login from './pages/Login.jsx'
-import Cadastro from './pages/Cadastro.jsx'
-import Itens from './pages/itens.jsx'
+import HomePage from './pages/HomePage/HomePage.jsx'
+import Login from './pages/Login/Login.jsx'
+import Cadastro from './pages/Cadastro/Cadastro.jsx'
+import Itens from './pages/Itens/Itens.jsx'
 
 function App() {
     return (
