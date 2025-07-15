@@ -1,24 +1,31 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AppProvider } from './context/AppContext'
+import { ThemeProvider } from './context/ThemeContext'
 
-import HomePage from './pages/HomePage.jsx'
-import Login from './pages/login.jsx'
-import Cadastro from './pages/Cadastro.jsx'
-import Itens from './pages/itens.jsx'
+// Pages
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Cadastrar from './pages/Cadastrar'
+import Propostas from './pages/Propostas'
+import ItemDetalhes from './pages/ItemDetalhes'
+import Chat from './pages/Chat'
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/cadastro" element={<Cadastro />} />
-                <Route path="/itens" element={<Itens />} />
-                <Route
-                    path="*"
-                    element={<h1>404 - Página não encontrada</h1>}
-                />
-            </Routes>
-        </Router>
+        <ThemeProvider>
+            <AppProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/cadastrar" element={<Cadastrar />} />
+                        <Route path="/propostas" element={<Propostas />} />
+                        <Route path="/item/:id" element={<ItemDetalhes />} />
+                        <Route path="/chat/:chatId?" element={<Chat />} />
+                    </Routes>
+                </Router>
+            </AppProvider>
+        </ThemeProvider>
     )
 }
 
