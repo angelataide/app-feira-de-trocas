@@ -1,27 +1,5 @@
 import styled from 'styled-components'
 
-// Header
-export const HeaderWrapper = styled.header`
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    @media (max-width: 768px) {
-        flex-direction: column;
-        gap: 15px;
-        padding: 20px;
-    }
-`
-
-export const HeaderLogo = styled.div`
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--main-blue);
-`
-
 export const Nav = styled.nav`
     flex-grow: 1;
     text-align: center;
@@ -42,11 +20,6 @@ export const NavLink = styled.a`
     &:hover {
         color: var(--main-blue);
     }
-`
-
-export const HeaderActions = styled.div`
-    display: flex;
-    gap: 10px;
 `
 
 // Main Content
@@ -442,29 +415,5 @@ export const SecondaryButton = styled(Button)`
     @media (max-width: 768px) {
         width: 100%;
         max-width: 300px;
-    }
-`
-
-export const OutlineButton = styled(Button)`
-    color: var(--main-blue);
-    background-color: transparent;
-    border: 2px solid var(--main-blue);
-    padding: 10px 20px;
-    border-radius: 8px;
-
-    &:hover {
-        background-color: var(--lighter-blue);
-    }
-`
-
-export const FilledButton = styled(Button)`
-    color: #fff;
-    background-color: var(--main-blue);
-    border: 2px solid var(--main-blue);
-    padding: 10px 20px;
-    border-radius: 8px;
-
-    &:hover {
-        background-color: var(--darker-blue);
     }
 `

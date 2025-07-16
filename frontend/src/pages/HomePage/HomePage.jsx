@@ -1,4 +1,4 @@
-import Header from '../../components/Header.jsx'
+import Header from '../../components/Header/Header.jsx'
 import HeroSection from '../../components/HeroSection.jsx'
 import StatsSection from '../../components/StatsSection.jsx'
 import HighlightSection from '../../components/HighlightSection.jsx'
