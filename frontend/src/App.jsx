@@ -1,7 +1,12 @@
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage.jsx";
 function App() {
     return (
         <>
-            <h1 className="text-3xl text-red-500">Ola mundo</h1>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="*" element={<h1>404: Página Não Encontrada</h1>} />
+            </Routes>
         </>
     );
 }
