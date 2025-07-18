@@ -14,7 +14,7 @@ export default function HeroSection() {
                     sustentável.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link to="/explorar">
+                    <Link to="/explorer">
                         <button className="flex items-center justify-center w-full sm:w-auto gap-2 px-6 py-3 font-semibold bg-white text-primary-600 rounded-lg hover:bg-neutral-100 transition-colors">
                             <Search className="w-4 h-4" />
                             Explorar Itens
