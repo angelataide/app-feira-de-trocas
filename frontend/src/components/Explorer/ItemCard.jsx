@@ -7,6 +7,7 @@ import {
     Bike,
     Shirt,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const categoriaIcones = {
     Livros: <BookOpen className="w-4 h-4" />,
@@ -80,9 +81,11 @@ export default function ItemCard({ item }) {
                             {item.dataPublicacao}
                         </div>
                     </div>
-                    <button className="w-full h-10 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors">
-                        Ver Detalhes e Propor Troca
-                    </button>
+                    <Link to={`/item/${item.id}`}>
+                        <button className="w-full h-10 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors">
+                            Ver Detalhes e Propor Troca
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

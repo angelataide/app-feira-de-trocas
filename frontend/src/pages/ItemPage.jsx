@@ -32,7 +32,7 @@ export default function ItemPage() {
                         Oops! Item não encontrado.
                     </h1>
                     <Link
-                        to="/explorar"
+                        to="/explorer"
                         className="font-semibold text-primary-600 hover:underline"
                     >
                         Voltar para a exploração
@@ -51,7 +51,7 @@ export default function ItemPage() {
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-6">
                     <Link
-                        to="/explorar"
+                        to="/explorer"
                         className="flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-primary-600 transition-colors"
                     >
                         <ArrowLeft className="w-4 h-4" />

@@ -20,7 +20,7 @@ export default function ProposalSuccess() {
                             Voltar ao Início
                         </button>
                     </Link>
-                    <Link to="/propostas">
+                    <Link to="/proposals">
                         <button className="h-12 px-6 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors">
                             Ver Minhas Propostas
                         </button>
