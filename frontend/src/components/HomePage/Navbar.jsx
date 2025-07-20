@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import logo from "../../assets/Blue_Modern_Business_Corporate_Logo.png";
+import { LogOut } from "lucide-react";
 
 export default function Navbar() {
     const navigate = useNavigate();

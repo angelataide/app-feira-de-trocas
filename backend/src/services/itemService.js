@@ -54,7 +54,7 @@ async function getItemById(id) {
 async function updateItem(id, itemData) {
     await getItemById(id);
 
-    await itemRepository.update(id, itemData);
+    return await itemRepository.update(id, itemData);
 }
 
 async function deleteItem(id) {

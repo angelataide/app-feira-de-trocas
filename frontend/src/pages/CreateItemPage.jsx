@@ -1,33 +1,74 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import SuccessScreen from "../components/CreateItem/SuccessScreen";
+// <-- 1. IMPORTAMOS O HOOK DE AUTENTICAÇÃO
+// Verifique os nomes dos seus arquivos de mock
+
 import { Gift } from "lucide-react";
+import { condicoes } from "../constants/createMock";
+import useAuth from "../hooks/useAuth";
+import { categorias } from "../constants/categoriaMock";
 import FormField from "../components/CreateItem/FormField";
 import SelectField from "../components/CreateItem/SelectField";
-import { categorias } from "../constants/categoriaMock";
-import { bairros, condicoes } from "../constants/createMock";
 import ImageUpload from "../components/CreateItem/ImageUpload";
+import SuccessScreen from "../components/CreateItem/SuccessScreen";
 
 export default function CreateItemPage() {
     const navigate = useNavigate();
+    const { user, token } = useAuth();
+
     const [formData, setFormData] = useState({
         titulo: "",
         descricao: "",
         categoria: "",
-        bairro: "",
         condicao: "",
+        observacoes: "",
+        imagemUrl:
+            "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Adicionado URL de imagem de exemplo
     });
     const [isSuccess, setIsSuccess] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Item cadastrado:", formData);
-        setIsSuccess(true);
-        setTimeout(() => navigate("/explorer"), 3000); // Redireciona após 3s
+        setIsLoading(true);
+        setError(null);
+
+        const payload = {
+            ...formData,
+            usuarioId: user.id,
+        };
+
+        try {
+            const response = await fetch("http://localhost:3000/api/items", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(
+                    errorData.message || "Falha ao cadastrar o item."
+                );
+            }
+
+            setIsSuccess(true);
+            setTimeout(() => navigate("/explorer"), 3000);
+        } catch (err) {
+            setError(err.message);
+            console.error("Erro ao cadastrar item:", err);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     if (isSuccess) {
@@ -76,7 +117,6 @@ export default function CreateItemPage() {
                             }
                             required
                         />
-
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <SelectField
                                 id="categoria"
@@ -88,18 +128,7 @@ export default function CreateItemPage() {
                                 }
                                 options={categorias}
                             />
-                            <SelectField
-                                id="bairro"
-                                label="Bairro *"
-                                placeholder="Selecione seu bairro"
-                                value={formData.bairro}
-                                onChange={(e) =>
-                                    handleChange("bairro", e.target.value)
-                                }
-                                options={bairros}
-                            />
                         </div>
-
                         <SelectField
                             id="condicao"
                             label="Estado de Conservação *"
@@ -110,11 +139,28 @@ export default function CreateItemPage() {
                             }
                             options={condicoes}
                         />
+                        <FormField
+                            id="observacoes"
+                            label="Observações (opcional)"
+                            type="textarea"
+                            rows={3}
+                            placeholder="Preferências para troca, horários disponíveis, etc."
+                            value={formData.observacoes}
+                            onChange={(e) =>
+                                handleChange("observacoes", e.target.value)
+                            }
+                        />
 
                         <ImageUpload />
 
+                        {error && (
+                            <p className="text-sm text-red-600 text-center">
+                                {error}
+                            </p>
+                        )}
+
                         <div className="flex gap-4 pt-6">
-                            <Link to="/explorer" className="w-full">
+                            <Link to="/explorar" className="w-full">
                                 <button
                                     type="button"
                                     className="w-full h-12 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold rounded-lg transition-colors"
@@ -124,9 +170,12 @@ export default function CreateItemPage() {
                             </Link>
                             <button
                                 type="submit"
-                                className="w-full h-12 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
+                                disabled={isLoading}
+                                className="w-full h-12 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all disabled:bg-neutral-400"
                             >
-                                ✨ Cadastrar Item
+                                {isLoading
+                                    ? "Cadastrando..."
+                                    : "✨ Cadastrar Item"}
                             </button>
                         </div>
                     </form>
