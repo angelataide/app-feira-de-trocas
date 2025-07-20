@@ -21,7 +21,7 @@ export default function HeroSection() {
                             <ArrowRight className="w-4 h-4" />
                         </button>
                     </Link>
-                    <Link to="/cadastrar-item">
+                    <Link to="/item/create">
                         <button className="flex items-center justify-center w-full sm:w-auto gap-2 px-6 py-3 font-semibold bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors">
                             <Plus className="w-4 h-4" />
                             Cadastrar Item

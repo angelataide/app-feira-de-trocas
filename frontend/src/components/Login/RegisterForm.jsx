@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+
 import { Lock, Mail, User } from "lucide-react";
 import InputField from "./InputField";
+import useAuth from "../../hooks/useAuth.js";
 
 export default function RegisterForm() {
     const navigate = useNavigate();
-    const { login } = useAuth(); // Usamos o login para autenticar o usuário após o cadastro
+    const { login } = useAuth();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -20,12 +21,10 @@ export default function RegisterForm() {
         setIsLoading(true);
 
         try {
-            // **PONTO DE INTEGRAÇÃO COM SEU BACKEND**
-            // Substitua pela URL do seu endpoint de cadastro
-            const response = await fetch("http://localhost:3000/api/register", {
+            const response = await fetch("http://localhost:3000/api/users", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nome: name, email, senha: password }), // Ajuste os nomes dos campos se necessário
+                body: JSON.stringify({ nome: name, email, senha: password }),
             });
 
             const data = await response.json();
@@ -34,11 +33,9 @@ export default function RegisterForm() {
                 throw new Error(data.message || "Falha no cadastro.");
             }
 
-            // Após o cadastro, logamos o usuário automaticamente
             login(data.user, data.token);
 
-            // E redirecionamos
-            navigate("/explorar");
+            navigate("/explorer");
         } catch (err) {
             setError(err.message);
         } finally {

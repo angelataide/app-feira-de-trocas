@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import useAuth from "../../hooks/useAuth.js"; // <-- ESTA LINHA ESTAVA FALTANDO
 import InputField from "./InputField";
 import { Lock, Mail } from "lucide-react";
 
 export default function LoginForm() {
     const navigate = useNavigate();
-    const { login } = useAuth();
-
+    const { login } = useAuth(); // Agora esta linha funcionará
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -19,8 +18,6 @@ export default function LoginForm() {
         setIsLoading(true);
 
         try {
-            // **PONTO DE INTEGRAÇÃO COM SEU BACKEND**
-            // Substitua 'http://localhost:3000/api/login' pela URL do seu endpoint de login
             const response = await fetch("http://localhost:3000/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -30,13 +27,11 @@ export default function LoginForm() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || "Falha no login.");
+                throw new Error(data.message || "Falha no login");
             }
 
-            // Se o login for bem-sucedido, chame a função 'login' do AuthContext
-            login(data.user, data.token); // Supondo que sua API retorna { user: {...}, token: "..." }
+            login(data.user, data.token);
 
-            // Redirecione para uma página protegida
             navigate("/explorer");
         } catch (err) {
             setError(err.message);
@@ -63,9 +58,9 @@ export default function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-
-            {error && <p className="text-sm text-red-600">{error}</p>}
-
+            {error && (
+                <p className="text-sm text-red-600 text-center">{error}</p>
+            )}
             <div className="flex items-center justify-end text-sm">
                 <Link
                     to="/recuperar-senha"
