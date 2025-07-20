@@ -1,34 +1,67 @@
 import itemRepository from '../repositories/itemRepository.js';
 import userRepository from '../repositories/userRepository.js';
 
-const createItem = async (itemData) => {
+async function createItem(itemData) {
     const userExists = await userRepository.findById(itemData.usuarioId);
     if (!userExists) {
-        throw new Error('Usuário não encontrado. Não é possível criar o item.');
+        throw new Error('Usuário não encontrado.');
     }
+    const createdItem = await itemRepository.create(itemData);
+    return createdItem;
+}
 
-    return itemRepository.create(itemData);
-};
+async function getAllItems() {
+    const itemsFromDb = await itemRepository.findAll();
 
-const getAllItems = async () => itemRepository.findAll();
+    return itemsFromDb.map((item) => ({
+        id: item.id,
+        titulo: item.titulo,
+        descricao: item.descricao,
+        categoria: item.categoria,
+        imagem: item.imagemUrl,
+        usuario: item.usuario.nome,
+        bairro: item.usuario.bairro,
+        dataPublicacao: item.createdAt.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+        }),
+        rating: 4.5,
+        likes: 10,
+    }));
+}
 
-const getItemById = async (id) => {
+async function getItemById(id) {
     const item = await itemRepository.findById(id);
     if (!item) {
         throw new Error('Item não encontrado.');
     }
-    return item;
-};
+    return {
+        id: item.id,
+        titulo: item.titulo,
+        descricao: item.descricao,
+        categoria: item.categoria,
+        imagem: item.imagemUrl,
+        usuario: item.usuario.nome,
+        bairro: item.usuario.bairro,
+        dataPublicacao: item.createdAt.toLocaleDateString('pt-BR'),
+        status: item.status.toLowerCase(),
+        condicao: item.condicao,
+        observacoes: item.observacoes,
+    };
+}
 
-const updateItem = async (id, itemData) => {
+async function updateItem(id, itemData) {
     await getItemById(id);
-    return itemRepository.update(id, itemData);
-};
 
-const deleteItem = async (id) => {
+    await itemRepository.update(id, itemData);
+}
+
+async function deleteItem(id) {
     await getItemById(id);
-    return itemRepository.remove(id);
-};
+
+    await itemRepository.remove(id);
+}
 
 export default {
     createItem,
