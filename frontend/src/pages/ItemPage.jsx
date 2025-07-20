@@ -1,35 +1,72 @@
-import { Link, useParams } from "react-router-dom";
-import { itensDisponiveis } from "../constants/itensMock";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProposalSuccess from "../components/Item/ProposalSuccess";
+import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import ItemImage from "../components/Item/ItemImage";
 import ItemInfo from "../components/Item/ItemInfo";
 import UserCard from "../components/Item/UserCard";
 import ProposalForm from "../components/Item/ProposalForm";
+import AdditionalDetailsCard from "../components/Item/AdditionalDetailsCard";
 
 export default function ItemPage() {
     const { id } = useParams();
 
-    const item = itensDisponiveis.find((i) => i.id === parseInt(id));
+    // 2. Novos estados para gerenciar a busca de dados e o item
+    const [item, setItem] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [showPropostaForm, setShowPropostaForm] = useState(false);
     const [propostaEnviada, setPropostaEnviada] = useState(false);
 
+    // 3. useEffect para buscar os dados do item na API
+    useEffect(() => {
+        const fetchItem = async () => {
+            try {
+                // Usamos o 'id' da URL para buscar o item específico
+                const response = await fetch(
+                    `http://localhost:3000/api/items/${id}`
+                );
+                if (!response.ok) {
+                    throw new Error("Item não encontrado.");
+                }
+                const data = await response.json();
+                setItem(data);
+            } catch (err) {
+                setError(err.message);
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchItem();
+    }, [id]); // O efeito roda novamente se o ID na URL mudar
+
     const handleEnviarProposta = (formData) => {
         console.log("Proposta enviada:", formData);
+        // Aqui iria a lógica para POST /api/propostas
         setTimeout(() => {
             setPropostaEnviada(true);
             setShowPropostaForm(false);
         }, 1000);
     };
 
-    if (!item) {
+    // 4. Renderização condicional para os estados de carregamento e erro
+    if (isLoading) {
         return (
-            <div className="min-h-screen bg-neutral-50 flex items-center justify-center text-center">
+            <div className="min-h-screen flex items-center justify-center">
+                <p>Carregando item...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center text-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-neutral-800 mb-4">
-                        Oops! Item não encontrado.
+                    <h1 className="text-2xl font-bold text-red-500 mb-4">
+                        Oops! {error}
                     </h1>
                     <Link
                         to="/explorer"
@@ -43,7 +80,7 @@ export default function ItemPage() {
     }
 
     if (propostaEnviada) {
-        return <ProposalSuccess />;
+        return <ProposalSuccess userName={item.usuario} />;
     }
 
     return (
@@ -63,6 +100,7 @@ export default function ItemPage() {
                     <div>
                         <ItemInfo item={item} />
                         <UserCard item={item} />
+                        <AdditionalDetailsCard item={item} />
                         {!showPropostaForm ? (
                             <button
                                 onClick={() => setShowPropostaForm(true)}
