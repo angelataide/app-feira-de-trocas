@@ -1,13 +1,94 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import useAuth from "../../hooks/useAuth";
 import { MessageCircle, Send } from "lucide-react";
 
-export default function ConversationThread({ conversa, onSendMessage }) {
-    const [newMessage, setNewMessage] = useState("");
+const COOLDOWN_SECONDS = 30;
 
-    const handleSend = () => {
-        if (newMessage.trim()) {
-            onSendMessage(newMessage);
+export default function ConversationThread({
+    propostaId,
+    conversa,
+    onUpdateConversa,
+}) {
+    const { user, token } = useAuth();
+    const [newMessage, setNewMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [cooldown, setCooldown] = useState(0);
+    const endRef = useRef(null); // 👈 ref para scroll automático
+
+    useEffect(() => {
+        if (!propostaId) return;
+        let timer;
+        if (cooldown > 0) {
+            timer = setInterval(() => {
+                setCooldown((prev) => prev - 1);
+            }, 1000);
+        } else {
+            fetchMessages();
+        }
+        return () => clearInterval(timer);
+    }, [cooldown, propostaId]);
+
+    useEffect(() => {
+        if (endRef.current) {
+            endRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [conversa]);
+
+    const fetchMessages = async () => {
+        if (!token || !propostaId) return;
+        try {
+            const response = await fetch(
+                `http://localhost:3000/api/propostas/${propostaId}/mensagens`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            if (!response.ok) throw new Error("Falha ao buscar mensagens");
+
+            const data = await response.json();
+
+            const mensagensFormatadas = data.map((msg) => ({
+                ...msg,
+                isOwner: String(msg.autor.id) === String(user.id),
+            }));
+            onUpdateConversa(propostaId, mensagensFormatadas);
+        } catch (error) {
+            console.error("Falha ao buscar novas mensagens:", error);
+        }
+    };
+
+    const handleSendMessage = async (e) => {
+        if (e) e.preventDefault();
+        if (!newMessage.trim() || cooldown > 0 || !token || !propostaId) return;
+
+        setIsLoading(true);
+        try {
+            const payload = { conteudo: newMessage };
+            const response = await fetch(
+                `http://localhost:3000/api/propostas/${propostaId}/mensagens`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(payload),
+                }
+            );
+            if (!response.ok) throw new Error("Falha ao enviar mensagem");
+
+            const novaMensagemApi = await response.json();
+            const novaMensagem = { ...novaMensagemApi, isOwner: true };
+            onUpdateConversa(propostaId, [...conversa, novaMensagem]);
+
             setNewMessage("");
+            setCooldown(COOLDOWN_SECONDS);
+
+            await fetchMessages(); // 👈 garante atualização mesmo se backend alterar
+        } catch (error) {
+            console.error("Falha ao enviar mensagem:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -33,36 +114,62 @@ export default function ConversationThread({ conversa, onSendMessage }) {
                                         : "bg-white text-neutral-800 border border-neutral-200"
                                 }`}
                             >
-                                <p className="text-sm">{msg.mensagem}</p>
+                                <p className="text-sm">{msg.conteudo}</p>
                                 <p
-                                    className={`text-xs mt-1 ${
+                                    className={`text-xs mt-1 text-right ${
                                         msg.isOwner
                                             ? "text-blue-200"
                                             : "text-neutral-400"
                                     }`}
                                 >
-                                    {msg.autor} • {msg.data}
+                                    {msg.autor?.nome} •{" "}
+                                    {new Date(msg.createdAt).toLocaleTimeString(
+                                        "pt-BR",
+                                        { hour: "2-digit", minute: "2-digit" }
+                                    )}
                                 </p>
                             </div>
                         </div>
                     ))}
+                    {conversa.length === 0 && (
+                        <p className="text-center text-sm text-neutral-400 py-4">
+                            Nenhuma mensagem ainda. Seja o primeiro a conversar!
+                        </p>
+                    )}
+                    <div ref={endRef} />
                 </div>
-                <div className="flex items-center gap-2">
+
+                <form
+                    onSubmit={handleSendMessage}
+                    className="flex items-center gap-2"
+                >
                     <textarea
                         placeholder="Digite sua mensagem..."
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSendMessage();
+                            }
+                        }}
                         rows={1}
                         className="flex-1 p-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                     />
                     <button
-                        onClick={handleSend}
-                        className="h-10 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-neutral-300"
-                        disabled={!newMessage.trim()}
+                        type="submit"
+                        disabled={isLoading || cooldown > 0}
+                        className="h-10 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-neutral-400 transition-colors"
                     >
-                        <Send className="w-4 h-4" />
+                        {isLoading ? (
+                            "..."
+                        ) : cooldown > 0 ? (
+                            `${cooldown}s`
+                        ) : (
+                            <Send className="w-4 h-4" />
+                        )}
                     </button>
-                </div>
+                </form>
             </div>
         </div>
     );

@@ -37,7 +37,7 @@ export default function Footer() {
                         <ul className="space-y-2 text-neutral-400">
                             <li>
                                 <Link
-                                    to="/explorar"
+                                    to="/explorer"
                                     className="hover:text-white transition-colors"
                                 >
                                     Explorar Itens

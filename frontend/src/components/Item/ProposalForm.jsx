@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { meusItens } from "../../constants/meusItens";
 
-export default function ProposalForm({ onCancel, onSubmit }) {
-    const [itemOferecido, setItemOferecido] = useState("");
-    const [mensagem, setMensagem] = useState("");
+export default function ProposalForm({ meusItens, onCancel, onSubmit }) {
+    const [itemOferecidoId, setItemOferecidoId] = useState("");
+    const [mensagemInicial, setMensagemInicial] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit({ itemOferecido, mensagem });
+        setIsLoading(true);
+        await onSubmit({ itemOferecidoId, mensagemInicial });
+        setIsLoading(false);
     };
 
     return (
@@ -28,16 +30,17 @@ export default function ProposalForm({ onCancel, onSubmit }) {
                     </label>
                     <select
                         id="item-oferecido"
-                        value={itemOferecido}
-                        onChange={(e) => setItemOferecido(e.target.value)}
+                        value={itemOferecidoId}
+                        onChange={(e) => setItemOferecidoId(e.target.value)}
+                        required
                         className="w-full h-12 px-4 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
                     >
                         <option value="" disabled>
                             Selecione um dos seus itens
                         </option>
                         {meusItens.map((item) => (
-                            <option key={item.id} value={item.titulo}>
-                                {item.titulo} ({item.categoria})
+                            <option key={item.id} value={item.id}>
+                                {item.titulo}
                             </option>
                         ))}
                     </select>
@@ -51,9 +54,9 @@ export default function ProposalForm({ onCancel, onSubmit }) {
                     </label>
                     <textarea
                         id="mensagem"
-                        placeholder="Conte mais sobre seu item ou deixe uma mensagem..."
-                        value={mensagem}
-                        onChange={(e) => setMensagem(e.target.value)}
+                        placeholder="Deixe uma mensagem para o dono do item..."
+                        value={mensagemInicial}
+                        onChange={(e) => setMensagemInicial(e.target.value)}
                         rows={3}
                         className="w-full p-3 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
@@ -68,10 +71,10 @@ export default function ProposalForm({ onCancel, onSubmit }) {
                     </button>
                     <button
                         type="submit"
-                        disabled={!itemOferecido}
+                        disabled={!itemOferecidoId || isLoading}
                         className="flex-1 h-12 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors disabled:bg-neutral-300"
                     >
-                        Enviar Proposta
+                        {isLoading ? "Enviando..." : "Enviar Proposta"}
                     </button>
                 </div>
             </form>

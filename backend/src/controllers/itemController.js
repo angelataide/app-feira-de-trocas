@@ -9,12 +9,13 @@ const create = async (req, res) => {
     }
 };
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
     try {
-        const items = await itemService.getAllItems();
+        // Agora ele chama o serviço específico para itens disponíveis
+        const items = await itemService.getAllAvailableItems();
         res.status(200).json(items);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
@@ -44,6 +45,16 @@ const remove = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 };
+const getMyItems = async (req, res, next) => {
+    try {
+        // Pegamos o ID do usuário que o middleware 'validarToken' nos deu
+        const userId = req.user.id;
+        const items = await itemService.getItemsByUserId(userId);
+        res.status(200).json(items);
+    } catch (error) {
+        next(error);
+    }
+};
 
 export default {
     create,
@@ -51,4 +62,5 @@ export default {
     getById,
     update,
     remove,
+    getMyItems,
 };

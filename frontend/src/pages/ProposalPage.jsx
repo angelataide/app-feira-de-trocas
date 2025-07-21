@@ -1,19 +1,53 @@
-import { useState } from "react";
-import {
-    propostasEnviadasMock,
-    propostasRecebidasMock,
-} from "../constants/propostasMock";
+import { useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 import ProposalCard from "../components/Proposal/ProposalCard";
 import EmptyState from "../components/Proposal/EmptyState";
+//import ProposalCard from "../components/propostas/ProposalCard";
+//import EmptyState from "../components/propostas/EmptyState";
 
-export default function ProposalPage() {
+export default function PropostasPage() {
+    const { token } = useAuth();
     const [activeTab, setActiveTab] = useState("recebidas");
-    const [propostasRecebidas, setPropostasRecebidas] = useState(
-        propostasRecebidasMock
-    );
-    const [propostasEnviadas, setPropostasEnviadas] = useState(
-        propostasEnviadasMock
-    );
+
+    const [propostasRecebidas, setPropostasRecebidas] = useState([]);
+    const [propostasEnviadas, setPropostasEnviadas] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchPropostas = async () => {
+            if (!token) return;
+
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                const response = await fetch(
+                    "http://localhost:3000/api/propostas",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Falha ao buscar suas propostas.");
+                }
+
+                const data = await response.json();
+                setPropostasRecebidas(data.propostasRecebidas || []);
+                setPropostasEnviadas(data.propostasEnviadas || []);
+            } catch (err) {
+                setError(err.message);
+                console.error("Erro detalhado:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchPropostas();
+    }, [token]);
 
     const updateConversa = (propostaId, novaConversa) => {
         if (activeTab === "recebidas") {
@@ -29,6 +63,54 @@ export default function ProposalPage() {
                 )
             );
         }
+    };
+
+    const handleStatusChange = (propostaId, propostaAtualizada) => {
+        const updateUserInterface = (prevState) =>
+            prevState.map((p) =>
+                p.id === propostaId
+                    ? { ...p, status: propostaAtualizada.status }
+                    : p
+            );
+
+        // Atualiza a lista correta dependendo da aba ativa
+        if (propostasRecebidas.some((p) => p.id === propostaId)) {
+            setPropostasRecebidas(updateUserInterface);
+        }
+        if (propostasEnviadas.some((p) => p.id === propostaId)) {
+            setPropostasEnviadas(updateUserInterface);
+        }
+    };
+
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <p className="text-center text-neutral-500">
+                    Carregando propostas...
+                </p>
+            );
+        }
+        if (error) {
+            return <p className="text-center text-red-500">{error}</p>;
+        }
+
+        const propostasAtuais =
+            activeTab === "recebidas" ? propostasRecebidas : propostasEnviadas;
+        const isRecebidaTab = activeTab === "recebidas";
+
+        return propostasAtuais.length > 0 ? (
+            propostasAtuais.map((p) => (
+                <ProposalCard
+                    key={p.id}
+                    proposta={p}
+                    isRecebida={isRecebidaTab}
+                    onUpdateConversa={updateConversa}
+                    onStatusChange={handleStatusChange}
+                />
+            ))
+        ) : (
+            <EmptyState isRecebida={isRecebidaTab} />
+        );
     };
 
     return (
@@ -52,7 +134,8 @@ export default function ProposalPage() {
                                 : "text-neutral-500 hover:bg-neutral-100"
                         }`}
                     >
-                        Recebidas ({propostasRecebidas.length})
+                        Recebidas (
+                        {isLoading ? "..." : propostasRecebidas.length})
                     </button>
                     <button
                         onClick={() => setActiveTab("enviadas")}
@@ -62,38 +145,12 @@ export default function ProposalPage() {
                                 : "text-neutral-500 hover:bg-neutral-100"
                         }`}
                     >
-                        Enviadas ({propostasEnviadas.length})
+                        Enviadas ({isLoading ? "..." : propostasEnviadas.length}
+                        )
                     </button>
                 </div>
 
-                <div className="space-y-6">
-                    {activeTab === "recebidas" &&
-                        (propostasRecebidas.length > 0 ? (
-                            propostasRecebidas.map((p) => (
-                                <ProposalCard
-                                    key={p.id}
-                                    proposta={p}
-                                    isRecebida={true}
-                                    onUpdateConversa={updateConversa}
-                                />
-                            ))
-                        ) : (
-                            <EmptyState isRecebida={true} />
-                        ))}
-                    {activeTab === "enviadas" &&
-                        (propostasEnviadas.length > 0 ? (
-                            propostasEnviadas.map((p) => (
-                                <ProposalCard
-                                    key={p.id}
-                                    proposta={p}
-                                    isRecebida={false}
-                                    onUpdateConversa={updateConversa}
-                                />
-                            ))
-                        ) : (
-                            <EmptyState isRecebida={false} />
-                        ))}
-                </div>
+                <div className="space-y-6">{renderContent()}</div>
             </main>
         </div>
     );

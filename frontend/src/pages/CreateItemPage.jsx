@@ -160,7 +160,7 @@ export default function CreateItemPage() {
                         )}
 
                         <div className="flex gap-4 pt-6">
-                            <Link to="/explorar" className="w-full">
+                            <Link to="/explorer" className="w-full">
                                 <button
                                     type="button"
                                     className="w-full h-12 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold rounded-lg transition-colors"

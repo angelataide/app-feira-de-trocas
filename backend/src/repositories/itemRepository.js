@@ -51,10 +51,37 @@ async function remove(id) {
     });
 }
 
+function findByOwnerId(userId) {
+    return prisma.item.findMany({
+        where: {
+            usuarioId: userId,
+            status: 'DISPONIVEL', // <-- ADICIONAMOS O FILTRO DE STATUS AQUI
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+    });
+}
+
+function findAllAvailable() {
+    return prisma.item.findMany({
+        where: {
+            status: 'DISPONIVEL', // O filtro agora está aqui!
+        },
+        include: {
+            usuario: { select: { id: true, nome: true, bairro: true } },
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+    });
+}
 export default {
     create,
     findAll,
     findById,
     update,
     remove,
+    findByOwnerId,
+    findAllAvailable,
 };

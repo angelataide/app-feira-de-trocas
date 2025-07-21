@@ -48,6 +48,7 @@ async function getItemById(id) {
         status: item.status.toLowerCase(),
         condicao: item.condicao,
         observacoes: item.observacoes,
+        usuarioId: item.usuarioId,
     };
 }
 
@@ -63,10 +64,39 @@ async function deleteItem(id) {
     await itemRepository.remove(id);
 }
 
+async function getItemsByUserId(userId) {
+    // Aqui podemos no futuro formatar os dados se necessário
+    return itemRepository.findByOwnerId(userId);
+}
+
+async function getAllAvailableItems() {
+    const itemsFromDb = await itemRepository.findAllAvailable();
+
+    // Reutilizamos a mesma lógica de formatação de antes
+    return itemsFromDb.map((item) => ({
+        id: item.id,
+        titulo: item.titulo,
+        descricao: item.descricao,
+        categoria: item.categoria,
+        imagem: item.imagemUrl,
+        usuario: item.usuario.nome,
+        bairro: item.usuario.bairro,
+        dataPublicacao: item.createdAt.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+        }),
+        rating: 4.5,
+        likes: 10,
+    }));
+}
+
 export default {
     createItem,
     getAllItems,
     getItemById,
     updateItem,
     deleteItem,
+    getItemsByUserId,
+    getAllAvailableItems,
 };

@@ -1,35 +1,104 @@
-// Importo o serviço de propostas para lidar com as regras de negócio das propostas
 import propostaService from '../services/propostaService.js';
 
-// Função para criar uma nova proposta de troca
-const create = async (req, res) => {
+async function create(req, res, next) {
     try {
-        // Cria a proposta usando o serviço
-        const proposta = await propostaService.createProposta(req.body);
-        res.status(201).json(proposta); // Retorna a proposta criada
+        const solicitanteId = req.user.id;
+        const proposta = await propostaService.createProposta(
+            req.body,
+            solicitanteId,
+        );
+        res.status(201).json(proposta);
     } catch (error) {
-        res.status(400).json({ message: error.message }); // Retorna erro se algo der errado
+        next(error);
     }
-};
+}
 
-// Função para responder uma proposta (aceitar, recusar ou cancelar)
-const responder = async (req, res) => {
+async function getAll(req, res, next) {
+    try {
+        const userId = req.user.id;
+        const propostas = await propostaService.getPropostas(userId);
+        res.status(200).json(propostas);
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function aceitar(req, res, next) {
     try {
         const { id } = req.params;
-        const { status } = req.body; // Espera receber 'ACEITA', 'RECUSADA' ou 'CANCELADA'
-
-        if (!['ACEITA', 'RECUSADA', 'CANCELADA'].includes(status)) {
-            return res.status(400).json({ message: 'Status inválido.' }); // Valida o status
-        }
-        // Atualiza o status da proposta
-        const proposta = await propostaService.responderProposta(id, status);
-        return res.status(200).json(proposta); // Retorna a proposta atualizada
+        const userId = req.user.id;
+        const propostaAtualizada =
+            await propostaService.atualizarStatusProposta(
+                parseInt(id),
+                userId,
+                'ACEITA',
+            );
+        res.status(200).json(propostaAtualizada);
     } catch (error) {
-        return res.status(400).json({ message: error.message }); // Retorna erro se algo der errado
+        next(error);
     }
-};
+}
 
-// Exporto as funções para serem usadas nas rotas
+async function recusar(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+        const propostaAtualizada =
+            await propostaService.atualizarStatusProposta(
+                parseInt(id),
+                userId,
+                'RECUSADA',
+            );
+        res.status(200).json(propostaAtualizada);
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function addMessage(req, res, next) {
+    try {
+        const { id: propostaId } = req.params;
+        const { id: autorId } = req.user;
+        const { conteudo } = req.body;
+
+        if (!conteudo) {
+            return res
+                .status(400)
+                .json({
+                    message: 'O conteúdo da mensagem não pode ser vazio.',
+                });
+        }
+
+        const novaMensagem = await propostaService.addMessageToProposal(
+            parseInt(propostaId),
+            autorId,
+            conteudo,
+        );
+        res.status(201).json(novaMensagem);
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getMessages(req, res, next) {
+    try {
+        const { id: propostaId } = req.params;
+        const userId = req.user.id;
+        const mensagens = await propostaService.getMessagesForProposal(
+            parseInt(propostaId),
+            userId,
+        );
+        res.status(200).json(mensagens);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
-    create, responder
+    create,
+    getAll,
+    aceitar,
+    recusar,
+    addMessage, // <-- ESTA FUNÇÃO ESTAVA FALTANDO NA EXPORTAÇÃO
+    getMessages,
 };

@@ -15,7 +15,7 @@ export default function EmptyState({ isRecebida }) {
                     ? "Quando alguém se interessar, as propostas aparecerão aqui."
                     : "Explore itens e faça sua primeira proposta!"}
             </p>
-            <Link to={isRecebida ? "/cadastrar-item" : "/explorar"}>
+            <Link to={isRecebida ? "/item/create" : "/explorer"}>
                 <button className="h-10 px-5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700">
                     {isRecebida ? "Cadastrar Primeiro Item" : "Explorar Itens"}
                 </button>

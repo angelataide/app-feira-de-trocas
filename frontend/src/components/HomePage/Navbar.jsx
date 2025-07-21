@@ -13,8 +13,6 @@ export default function Navbar() {
         navigate("/");
     };
 
-    console.log(user);
-
     return (
         <header className="bg-white/80 backdrop-blur-sm border-b border-neutral-100 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
