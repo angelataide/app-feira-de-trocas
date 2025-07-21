@@ -2,6 +2,10 @@ import itemService from '../services/itemService.js';
 
 const create = async (req, res) => {
     try {
+        // req.file contém o arquivo enviado pelo multer
+        if (req.file) {
+            req.body.imagemUrl = `${req.user.id}/${req.file.filename}`;
+        }
         const item = await itemService.createItem(req.body);
         res.status(201).json(item);
     } catch (error) {

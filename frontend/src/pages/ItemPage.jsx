@@ -168,7 +168,7 @@ export default function ItemDetalhePage() {
 
                         {isOwner ? (
                             <button
-                                onClick={() => navigate("/explorar")}
+                                onClick={() => navigate("/explorer")}
                                 className="w-full h-12 flex items-center justify-center gap-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold rounded-lg transition-colors"
                             >
                                 <Home className="w-5 h-5" />
