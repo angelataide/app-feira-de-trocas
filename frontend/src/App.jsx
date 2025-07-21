@@ -14,7 +14,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<h1>404: Página Não Encontrada</h1>} />
 
-            <Route element={<MainLayout />}>
+            <Route element={<MainLayout forceLoggedOut={true} />}>
                 <Route path="/" element={<HomePage />} />
                 <Route element={<PrivateRoute />}>
                     <Route path="/item/:id" element={<ItemPage />} />

@@ -8,7 +8,7 @@ export default function FilterBar({
     setCategoriaFiltro,
 }) {
     return (
-        <div className="bg-white backdrop-blur-lg rounded-xl p-4 shadow-md border border-neutral-100 mb-8 sticky top-20 z-40">
+        <div className="bg-white backdrop-blur-lg rounded-xl p-4 shadow-md border border-neutral-100 mb-8 z-40">
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 w-5 h-5" />

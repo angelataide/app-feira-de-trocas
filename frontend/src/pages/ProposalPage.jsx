@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import ProposalCard from "../components/Proposal/ProposalCard";
 import EmptyState from "../components/Proposal/EmptyState";
-//import ProposalCard from "../components/propostas/ProposalCard";
-//import EmptyState from "../components/propostas/EmptyState";
 
 export default function PropostasPage() {
     const { token } = useAuth();
@@ -25,15 +23,12 @@ export default function PropostasPage() {
                 const response = await fetch(
                     "http://localhost:3000/api/propostas",
                     {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
+                        headers: { Authorization: `Bearer ${token}` },
                     }
                 );
 
-                if (!response.ok) {
+                if (!response.ok)
                     throw new Error("Falha ao buscar suas propostas.");
-                }
 
                 const data = await response.json();
                 setPropostasRecebidas(data.propostasRecebidas || []);
@@ -73,7 +68,6 @@ export default function PropostasPage() {
                     : p
             );
 
-        // Atualiza a lista correta dependendo da aba ativa
         if (propostasRecebidas.some((p) => p.id === propostaId)) {
             setPropostasRecebidas(updateUserInterface);
         }
@@ -83,16 +77,13 @@ export default function PropostasPage() {
     };
 
     const renderContent = () => {
-        if (isLoading) {
+        if (isLoading)
             return (
                 <p className="text-center text-neutral-500">
                     Carregando propostas...
                 </p>
             );
-        }
-        if (error) {
-            return <p className="text-center text-red-500">{error}</p>;
-        }
+        if (error) return <p className="text-center text-red-500">{error}</p>;
 
         const propostasAtuais =
             activeTab === "recebidas" ? propostasRecebidas : propostasEnviadas;

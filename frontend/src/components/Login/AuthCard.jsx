@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
 export default function AuthCard() {
-    const [activeTab, setActiveTab] = useState("register");
+    const location = useLocation();
+
+    const getModeFromQuery = () => {
+        const params = new URLSearchParams(location.search);
+        const mode = params.get("mode");
+        return mode === "login" || mode === "register" ? mode : "register";
+    };
+
+    const [activeTab, setActiveTab] = useState(getModeFromQuery());
+
+    useEffect(() => {
+        setActiveTab(getModeFromQuery());
+    }, [location.search]);
+
     return (
         <div className="bg-white/80 backdrop-blur-lg border border-neutral-200/80 rounded-2xl shadow-xl overflow-hidden">
             <div className="p-6 sm:p-8">

@@ -13,21 +13,31 @@ export default function ConversationThread({
     const [newMessage, setNewMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [cooldown, setCooldown] = useState(0);
-    const endRef = useRef(null); // 👈 ref para scroll automático
+    const endRef = useRef(null);
 
+    // Busca mensagens a cada 15s, e na montagem
     useEffect(() => {
-        if (!propostaId) return;
-        let timer;
-        if (cooldown > 0) {
-            timer = setInterval(() => {
-                setCooldown((prev) => prev - 1);
-            }, 1000);
-        } else {
-            fetchMessages();
-        }
-        return () => clearInterval(timer);
-    }, [cooldown, propostaId]);
+        if (!propostaId || !token) return;
 
+        fetchMessages();
+
+        const interval = setInterval(() => {
+            fetchMessages();
+        }, 15000); // 15 segundos
+
+        return () => clearInterval(interval);
+    }, [propostaId, token]);
+
+    // Decrementa cooldown a cada segundo
+    useEffect(() => {
+        if (cooldown <= 0) return;
+        const timer = setInterval(() => {
+            setCooldown((prev) => prev - 1);
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [cooldown]);
+
+    // Scroll automático sempre que conversa mudar
     useEffect(() => {
         if (endRef.current) {
             endRef.current.scrollIntoView({ behavior: "smooth" });
@@ -84,7 +94,8 @@ export default function ConversationThread({
             setNewMessage("");
             setCooldown(COOLDOWN_SECONDS);
 
-            await fetchMessages(); // 👈 garante atualização mesmo se backend alterar
+            // Opcional: busca mensagens logo após enviar, pra garantir atualização
+            await fetchMessages();
         } catch (error) {
             console.error("Falha ao enviar mensagem:", error);
         } finally {
