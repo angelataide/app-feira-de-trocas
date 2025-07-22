@@ -18,7 +18,7 @@ async function getAllItems() {
         titulo: item.titulo,
         descricao: item.descricao,
         categoria: item.categoria,
-        imagem: item.imagemUrl,
+        imagem: `http://localhost:3000/api/upload/${item.imagemUrl}`,
         usuario: item.usuario.nome,
         bairro: item.usuario.bairro,
         dataPublicacao: item.createdAt.toLocaleDateString('pt-BR', {
@@ -41,7 +41,7 @@ async function getItemById(id) {
         titulo: item.titulo,
         descricao: item.descricao,
         categoria: item.categoria,
-        imagem: item.imagemUrl,
+        imagem: `http://localhost:3000/api/upload/${item.imagemUrl}`,
         usuario: item.usuario.nome,
         bairro: item.usuario.bairro,
         dataPublicacao: item.createdAt.toLocaleDateString('pt-BR'),
@@ -54,31 +54,27 @@ async function getItemById(id) {
 
 async function updateItem(id, itemData) {
     await getItemById(id);
-
     return await itemRepository.update(id, itemData);
 }
 
 async function deleteItem(id) {
     await getItemById(id);
-
     await itemRepository.remove(id);
 }
 
 async function getItemsByUserId(userId) {
-    // Aqui podemos no futuro formatar os dados se necessário
     return itemRepository.findByOwnerId(userId);
 }
 
 async function getAllAvailableItems() {
     const itemsFromDb = await itemRepository.findAllAvailable();
 
-    // Reutilizamos a mesma lógica de formatação de antes
     return itemsFromDb.map((item) => ({
         id: item.id,
         titulo: item.titulo,
         descricao: item.descricao,
         categoria: item.categoria,
-        imagem: item.imagemUrl,
+        imagem: `http://localhost:3000/api/upload/${item.imagemUrl}`,
         usuario: item.usuario.nome,
         bairro: item.usuario.bairro,
         dataPublicacao: item.createdAt.toLocaleDateString('pt-BR', {

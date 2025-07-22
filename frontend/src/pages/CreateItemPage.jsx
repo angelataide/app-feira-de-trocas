@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// <-- 1. IMPORTAMOS O HOOK DE AUTENTICAÇÃO
-// Verifique os nomes dos seus arquivos de mock
-
 import { Gift } from "lucide-react";
 import { condicoes } from "../constants/createMock";
 import useAuth from "../hooks/useAuth";
@@ -22,9 +19,9 @@ export default function CreateItemPage() {
         categoria: "",
         condicao: "",
         observacoes: "",
-        imagemUrl:
-            "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Adicionado URL de imagem de exemplo
     });
+
+    const [selectedFile, setSelectedFile] = useState(null);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -33,25 +30,34 @@ export default function CreateItemPage() {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
+    const handleFileSelected = (file) => {
+        setSelectedFile(file);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
 
-        const payload = {
-            ...formData,
-            usuarioId: user.id,
-        };
-
         try {
+            const formDataToSend = new FormData();
+            formDataToSend.append("titulo", formData.titulo);
+            formDataToSend.append("descricao", formData.descricao);
+            formDataToSend.append("categoria", formData.categoria);
+            formDataToSend.append("condicao", formData.condicao);
+            formDataToSend.append("observacoes", formData.observacoes);
+            formDataToSend.append("usuarioId", user.id);
+
+            if (selectedFile) {
+                formDataToSend.append("imagem", selectedFile);
+            }
+
             const response = await fetch("http://localhost:3000/api/items", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`, // sem Content-Type para o browser gerenciar
                 },
-                body: JSON.stringify(payload),
+                body: formDataToSend,
             });
 
             if (!response.ok) {
@@ -151,7 +157,7 @@ export default function CreateItemPage() {
                             }
                         />
 
-                        <ImageUpload />
+                        <ImageUpload onFileSelected={handleFileSelected} />
 
                         {error && (
                             <p className="text-sm text-red-600 text-center">

@@ -5,18 +5,19 @@ import multer from 'multer';
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const userId = req.user.id;
-        const uploadPath = path.join('uploads', String(userId));
-        // Cria a pasta do usuário se não existir
+        const uploadPath = path.join('upload', String(userId));
+        console.log('Destino upload:', uploadPath);
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath, { recursive: true });
+            console.log('Pasta criada:', uploadPath);
         }
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        // Pega extensão do arquivo original
         const ext = path.extname(file.originalname);
-        // Nome único: timestamp + extensão
-        cb(null, `${Date.now()}${ext}`);
+        const filename = `${Date.now()}${ext}`;
+        console.log('Nome do arquivo:', filename);
+        cb(null, filename);
     },
 });
 

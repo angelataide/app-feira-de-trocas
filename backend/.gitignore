@@ -57,9 +57,6 @@ Misc
 *.key
 *.crt
 
-Uploads folder (backend, se estiver versionando, geralmente não se versiona)
-uploads/
-
 React Native
 .expo/
 .expo-shared/
