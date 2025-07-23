@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'fs/promises';
 import itemRepository from '../repositories/itemRepository.js';
 import userRepository from '../repositories/userRepository.js';
 
@@ -58,8 +60,22 @@ async function updateItem(id, itemData) {
 }
 
 async function deleteItem(id) {
-    await getItemById(id);
+    const item = await getItemById(id); // já retorna usuarioId e imagem (URL completa)
+
     await itemRepository.remove(id);
+
+    if (item.imagem) {
+        // Extrai o caminho relativo da imagem a partir da URL
+        const relativePath = item.imagem.split('/api/upload/')[1]; // ex: "5/1753232880110.jpg"
+        const imagePath = path.join('upload', relativePath); // caminho real no disco
+
+        try {
+            await fs.unlink(imagePath);
+            console.log('Imagem excluída com sucesso:', imagePath);
+        } catch (err) {
+            console.warn('Falha ao excluir imagem:', imagePath, err.message);
+        }
+    }
 }
 
 async function getItemsByUserId(userId) {

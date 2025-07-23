@@ -57,6 +57,7 @@ function findByOwnerId(userId) {
             usuarioId: userId,
             status: 'DISPONIVEL', // <-- ADICIONAMOS O FILTRO DE STATUS AQUI
         },
+        include: { usuario: true },
         orderBy: {
             createdAt: 'desc',
         },
