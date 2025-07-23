@@ -98,16 +98,7 @@ export default function MyItemCard({ item, onEdit, onDelete }) {
                             </span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-neutral-400 mb-4">
-                        <div className="flex items-center gap-1.5">
-                            <MapPin className="w-4 h-4" />
-                            {item.bairro}
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                            <Clock className="w-4 h-4" />
-                            {item.dataPublicacao}
-                        </div>
-                    </div>
+                    <div className="flex items-center gap-4 text-sm text-neutral-400 mb-4"></div>
                     <div className="flex gap-2">
                         <button
                             disabled={!isEditable}
