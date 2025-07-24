@@ -2,11 +2,10 @@ import itemService from '../services/itemService.js';
 
 const create = async (req, res) => {
     try {
-        // Se tem arquivo, seta a url no body
         if (req.file) {
-            req.body.imagemUrl = `${req.user.id}/${req.file.filename}`; // só isso, sem 'http://...'
+            req.body.imagemUrl = `${req.user.id}/${req.file.filename}`;
         }
-        // Garante que o item pertence ao usuário logado
+
         req.body.usuarioId = req.user.id;
 
         const item = await itemService.createItem(req.body);

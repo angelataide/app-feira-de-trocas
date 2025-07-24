@@ -16,7 +16,7 @@ export default function EmptyState({ isRecebida }) {
                     : "Explore itens e faça sua primeira proposta!"}
             </p>
             <Link to={isRecebida ? "/item/create" : "/explorer"}>
-                <button className="h-10 px-5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700">
+                <button className="h-10 px-5 bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-semibold rounded-lg hover:bg-primary-700">
                     {isRecebida ? "Cadastrar Primeiro Item" : "Explorar Itens"}
                 </button>
             </Link>

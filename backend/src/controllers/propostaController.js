@@ -62,11 +62,9 @@ async function addMessage(req, res, next) {
         const { conteudo } = req.body;
 
         if (!conteudo) {
-            return res
-                .status(400)
-                .json({
-                    message: 'O conteúdo da mensagem não pode ser vazio.',
-                });
+            return res.status(400).json({
+                message: 'O conteúdo da mensagem não pode ser vazio.',
+            });
         }
 
         const novaMensagem = await propostaService.addMessageToProposal(
@@ -99,6 +97,6 @@ export default {
     getAll,
     aceitar,
     recusar,
-    addMessage, // <-- ESTA FUNÇÃO ESTAVA FALTANDO NA EXPORTAÇÃO
+    addMessage,
     getMessages,
 };

@@ -62,7 +62,7 @@ function EditItemModal({ item, onClose, onUpdate, onRemove }) {
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative">
                 <button
                     onClick={onClose}
@@ -101,14 +101,14 @@ function EditItemModal({ item, onClose, onUpdate, onRemove }) {
                     <button
                         onClick={handleDelete}
                         disabled={loading}
-                        className="flex-1 bg-red-600 text-white rounded px-4 py-2 font-semibold hover:bg-red-700 disabled:opacity-50"
+                        className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded px-4 py-2 font-semibold hover:bg-red-700 disabled:opacity-50"
                     >
                         {loading ? "Excluindo..." : "Excluir"}
                     </button>
                     <button
                         onClick={handleSave}
                         disabled={loading}
-                        className="flex-1 bg-primary-600 text-white rounded px-4 py-2 font-semibold hover:bg-primary-700 disabled:opacity-50"
+                        className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded px-4 py-2 font-semibold hover:bg-primary-700 disabled:opacity-50"
                     >
                         {loading ? "Salvando..." : "Salvar"}
                     </button>

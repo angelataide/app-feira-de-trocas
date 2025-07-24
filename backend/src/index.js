@@ -12,10 +12,8 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// 🛠 Serve a PASTA 'upload' na URL '/api/upload'
 app.use('/api/upload', express.static(path.join(process.cwd(), 'upload')));
 
-// Rotas da API
 app.use('/api', userRoutes);
 app.use('/api', itemRoutes);
 app.use('/api', propostaRoutes);

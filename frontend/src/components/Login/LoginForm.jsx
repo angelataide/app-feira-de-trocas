@@ -72,7 +72,7 @@ export default function LoginForm() {
             <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-12 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all disabled:bg-neutral-400"
+                className="w-full h-12 bg-gradient-to-r from-indigo-500 to-blue-500 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all disabled:bg-neutral-400"
             >
                 {isLoading ? "Entrando..." : "Entrar na conta"}
             </button>

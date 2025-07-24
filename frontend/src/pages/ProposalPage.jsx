@@ -121,7 +121,7 @@ export default function PropostasPage() {
                         onClick={() => setActiveTab("recebidas")}
                         className={`w-full p-2 rounded-lg font-semibold transition-all duration-300 ${
                             activeTab === "recebidas"
-                                ? "bg-primary-600 text-white"
+                                ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
                                 : "text-neutral-500 hover:bg-neutral-100"
                         }`}
                     >
@@ -132,7 +132,7 @@ export default function PropostasPage() {
                         onClick={() => setActiveTab("enviadas")}
                         className={`w-full p-2 rounded-lg font-semibold transition-all duration-300 ${
                             activeTab === "enviadas"
-                                ? "bg-primary-600 text-white"
+                                ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
                                 : "text-neutral-500 hover:bg-neutral-100"
                         }`}
                     >

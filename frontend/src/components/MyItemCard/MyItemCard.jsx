@@ -20,7 +20,6 @@ const categoriaIcones = {
 export default function MyItemCard({ item, onEdit, onDelete }) {
     const [loadingDelete, setLoadingDelete] = useState(false);
 
-    // Bloqueia editar/excluir se status não for DISPONIVEL
     const isEditable = item.status === "DISPONIVEL";
 
     const handleDelete = async () => {
@@ -105,7 +104,7 @@ export default function MyItemCard({ item, onEdit, onDelete }) {
                             onClick={() => isEditable && onEdit(item)}
                             className={`flex-1 h-10 rounded-lg font-semibold text-white transition-colors ${
                                 isEditable
-                                    ? "bg-primary-600 hover:bg-primary-700"
+                                    ? "bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-primary-700"
                                     : "bg-gray-300 cursor-not-allowed"
                             }`}
                         >
@@ -117,7 +116,7 @@ export default function MyItemCard({ item, onEdit, onDelete }) {
                             onClick={handleDelete}
                             className={`flex-1 h-10 rounded-lg font-semibold text-white transition-colors ${
                                 isEditable
-                                    ? "bg-red-600 hover:bg-red-700"
+                                    ? "bg-gradient-to-r from-pink-500 to-red-500 hover:bg-red-700"
                                     : "bg-gray-300 cursor-not-allowed"
                             }`}
                         >

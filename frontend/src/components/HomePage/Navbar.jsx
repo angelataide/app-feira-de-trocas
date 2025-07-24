@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import Logo from "../../assets/Blue_Modern_Business_Corporate_Logo.png";
 import useAuth from "../../hooks/useAuth";
 import {
     LogOut,
@@ -41,9 +42,9 @@ export default function Navbar() {
                     {isHome ? (
                         <Link to="/">
                             <img
-                                src="/assets/Blue_Modern_Business_Corporate_Logo.png"
+                                src={Logo}
                                 alt="TrocAí Logo"
-                                className="h-12 w-auto"
+                                className="h-42 w-auto"
                             />
                         </Link>
                     ) : (

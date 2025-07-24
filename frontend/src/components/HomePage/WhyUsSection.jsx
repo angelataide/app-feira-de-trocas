@@ -1,4 +1,4 @@
-import { Heart, Recycle, Shield, Users, Waves, Zap } from "lucide-react";
+import { Handshake, Heart, Recycle, Shield, Users, Zap } from "lucide-react";
 import FeatureCard from "./FeatureCard";
 
 export default function WhyUsSection() {
@@ -58,7 +58,7 @@ export default function WhyUsSection() {
                     </FeatureCard>
                     <FeatureCard
                         title="Impacto Positivo"
-                        icon={<Waves className="w-6 h-6 text-white" />}
+                        icon={<Handshake className="w-6 h-6 text-white" />}
                         iconBgClass="bg-gradient-to-r from-cyan-500 to-blue-500"
                     >
                         Cada troca gera impacto positivo no meio ambiente e na
