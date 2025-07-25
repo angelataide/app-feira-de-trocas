@@ -26,11 +26,11 @@ model Usuario {
     email    String  @unique
     senha    String
     telefone String?
-    bairro   String? // <-- MUDANÇA: Adicionado bairro do usuário
+    bairro   String?
 
     itens              Item[]
-    propostasFeitas    Proposta[] @relation("Solicitante") // <-- MUDANÇA: Nomeado para clareza
-    propostasRecebidas Proposta[] @relation("Receptor") // <-- MUDANÇA: Adicionada relação de propostas recebidas
+    propostasFeitas    Proposta[] @relation("Solicitante")
+    propostasRecebidas Proposta[] @relation("Receptor")
     mensagens          Mensagem[]
 
     createdAt DateTime @default(now())
@@ -41,12 +41,12 @@ model Usuario {
 
 model Item {
     id          Int        @id @default(autoincrement())
-    titulo      String     @map("titulo") // <-- MUDANÇA: Renomeado de 'nome' para 'titulo'
+    titulo      String     @map("titulo")
     descricao   String?
     categoria   String
-    condicao    String // <-- MUDANÇA: Adicionado estado de conservação
-    observacoes String? // <-- MUDANÇA: Adicionado campo de observações
-    imagemUrl   String?    @map("imagem_url") // <-- MUDANÇA: Adicionado campo para imagem
+    condicao    String
+    observacoes String?
+    imagemUrl   String?    @map("imagem_url")
     status      StatusItem @default(DISPONIVEL)
 
     usuarioId Int     @map("usuario_id")
@@ -64,12 +64,12 @@ model Item {
 model Proposta {
     id              Int            @id @default(autoincrement())
     status          StatusProposta @default(PENDENTE)
-    mensagemInicial String?        @map("mensagem_inicial") // <-- MUDANÇA: Adicionada mensagem inicial
+    mensagemInicial String?        @map("mensagem_inicial")
 
     solicitanteId Int     @map("solicitante_id")
     solicitante   Usuario @relation("Solicitante", fields: [solicitanteId], references: [id])
 
-    receptorId Int     @map("receptor_id") // <-- MUDANÇA: Adicionado ID explícito do receptor
+    receptorId Int     @map("receptor_id")
     receptor   Usuario @relation("Receptor", fields: [receptorId], references: [id])
 
     itemOfertadoId Int  @map("itemOfertado_id")
@@ -78,7 +78,7 @@ model Proposta {
     itemDesejadoId Int  @map("itemDesejado_id")
     itemDesejado   Item @relation("ItemDesejado", fields: [itemDesejadoId], references: [id])
 
-    mensagens Mensagem[] // <-- MUDANÇA: Relação com o chat
+    mensagens Mensagem[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -86,7 +86,6 @@ model Proposta {
     @@map("propostas")
 }
 
-// <-- MUDANÇA: Adicionado modelo para Mensagens
 model Mensagem {
     id       Int    @id @default(autoincrement())
     conteudo String

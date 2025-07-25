@@ -21,7 +21,6 @@ export default function AuthProvider({ children }) {
                         setUser(JSON.parse(storedUser));
                     }
 
-                    // Auto logout quando expirar
                     const timeout = exp * 1000 - Date.now();
                     const timerId = setTimeout(() => handleLogout(), timeout);
                     setLogoutTimer(timerId);

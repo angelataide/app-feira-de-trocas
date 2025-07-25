@@ -55,9 +55,6 @@ function createMessage(propostaId, autorId, conteudo) {
     });
 }
 
-// ==========================================================
-// FUNÇÃO QUE ESTAVA FALTANDO
-// ==========================================================
 function findMessagesByProposalId(propostaId) {
     return prisma.mensagem.findMany({
         where: { propostaId },
@@ -76,5 +73,5 @@ export default {
     updateStatus,
     findById,
     createMessage,
-    findMessagesByProposalId, // <-- E GARANTIR A EXPORTAÇÃO
+    findMessagesByProposalId,
 };

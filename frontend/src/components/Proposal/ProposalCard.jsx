@@ -129,7 +129,7 @@ export default function ProposalCard({
             {isExpanded && (
                 <ConversationThread
                     propostaId={proposta.id}
-                    conversa={proposta.conversa || []} // 👈 mudou aqui, usa conversa
+                    conversa={proposta.conversa || []}
                     onUpdateConversa={onUpdateConversa}
                 />
             )}

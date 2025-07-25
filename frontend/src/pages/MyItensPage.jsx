@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// ajuste o caminho do seu hook
 
 import useAuth from "../hooks/useAuth";
 import MyItemCard from "../components/MyItemCard/MyItemCard";
@@ -11,7 +10,6 @@ function EditItemModal({ item, onClose, onUpdate, onRemove }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Função de update
     async function handleSave() {
         setLoading(true);
         setError(null);
@@ -38,7 +36,6 @@ function EditItemModal({ item, onClose, onUpdate, onRemove }) {
         }
     }
 
-    // Função de delete
     async function handleDelete() {
         if (!confirm("Quer mesmo excluir este item?")) return;
         setLoading(true);
@@ -165,9 +162,7 @@ export default function MyItemsPage() {
     function updateItem(updatedItem) {
         setItems((prev) =>
             prev.map((item) =>
-                item.id === updatedItem.id
-                    ? { ...item, ...updatedItem } // preserva o usuário
-                    : item
+                item.id === updatedItem.id ? { ...item, ...updatedItem } : item
             )
         );
     }

@@ -129,5 +129,5 @@ export default {
     getPropostas,
     atualizarStatusProposta,
     getMessagesForProposal,
-    addMessageToProposal, // <-- GARANTINDO QUE ESTÁ NA EXPORTAÇÃO
+    addMessageToProposal,
 };

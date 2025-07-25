@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth.js"; // <-- ESTA LINHA ESTAVA FALTANDO
+import useAuth from "../../hooks/useAuth.js";
 import InputField from "./InputField";
 import { Lock, Mail } from "lucide-react";
 
 export default function LoginForm() {
     const navigate = useNavigate();
-    const { login } = useAuth(); // Agora esta linha funcionará
+    const { login } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");

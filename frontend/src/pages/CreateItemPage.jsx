@@ -55,7 +55,7 @@ export default function CreateItemPage() {
             const response = await fetch("http://localhost:3000/api/items", {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${token}`, // sem Content-Type para o browser gerenciar
+                    Authorization: `Bearer ${token}`,
                 },
                 body: formDataToSend,
             });

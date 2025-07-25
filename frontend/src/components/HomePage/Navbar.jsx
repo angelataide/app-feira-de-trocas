@@ -20,7 +20,6 @@ export default function Navbar() {
 
     const isHome = location.pathname === "/";
 
-    // Fecha menu ao mudar de rota
     useEffect(() => {
         setMenuOpen(false);
     }, [location.pathname]);
@@ -30,14 +29,12 @@ export default function Navbar() {
         navigate("/");
     };
 
-    // Gradiente do texto "Olá, João"
     const greetingGradient =
         "bg-[linear-gradient(135deg,_#38B2AC_0%,_#3B82F6_100%)] bg-clip-text text-transparent font-bold";
 
     return (
         <header className="bg-white/90 backdrop-blur-sm border-b border-neutral-200 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-                {/* Logo ou Saudação no lugar da logo */}
                 <div className="flex items-center gap-3 min-w-[150px]">
                     {isHome ? (
                         <Link to="/">
@@ -56,7 +53,6 @@ export default function Navbar() {
                     )}
                 </div>
 
-                {/* Botão menu hambúrguer - só em telas pequenas */}
                 <button
                     className="md:hidden p-2 rounded-md text-neutral-700 hover:bg-neutral-100 transition-colors"
                     onClick={() => setMenuOpen((o) => !o)}
@@ -65,7 +61,6 @@ export default function Navbar() {
                     {menuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
 
-                {/* Menu principal */}
                 <nav
                     className={`${
                         menuOpen ? "block" : "hidden"
@@ -106,7 +101,6 @@ export default function Navbar() {
                                 </>
                             )}
 
-                            {/* Botão sair */}
                             <button
                                 onClick={handleLogout}
                                 title="Sair"

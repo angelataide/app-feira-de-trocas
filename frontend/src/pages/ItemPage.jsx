@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-// Componentes
 import { MessageCircle, ArrowLeft, Home } from "lucide-react";
 import useAuth from "../hooks/useAuth";
 import ItemImage from "../components/Item/ItemImage";
@@ -97,7 +96,6 @@ export default function ItemDetalhePage() {
         }
     };
 
-    // Renderização de Loading e Erro
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -124,17 +122,14 @@ export default function ItemDetalhePage() {
         );
     }
 
-    // Se a proposta foi enviada com sucesso
     if (propostaEnviada) {
         return <ProposalSuccess userName={item?.usuario} />;
     }
 
-    // Se o item não foi encontrado após o loading
     if (!item) {
         return null;
     }
 
-    // Variáveis definidas DEPOIS de ter certeza que 'item' não é nulo
     const isOwner = isAuthenticated && user?.id === item.usuarioId;
     const itensOfertados = meusItens.filter(
         (meuItem) => meuItem.id !== item.id

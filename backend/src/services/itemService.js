@@ -60,14 +60,12 @@ async function updateItem(id, itemData) {
 }
 
 async function deleteItem(id) {
-    const item = await getItemById(id); // já retorna usuarioId e imagem (URL completa)
-
+    const item = await getItemById(id);
     await itemRepository.remove(id);
 
     if (item.imagem) {
-        // Extrai o caminho relativo da imagem a partir da URL
-        const relativePath = item.imagem.split('/api/upload/')[1]; // ex: "5/1753232880110.jpg"
-        const imagePath = path.join('upload', relativePath); // caminho real no disco
+        const relativePath = item.imagem.split('/api/upload/')[1];
+        const imagePath = path.join('upload', relativePath);
 
         try {
             await fs.unlink(imagePath);

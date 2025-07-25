@@ -15,7 +15,6 @@ export default function ConversationThread({
     const [cooldown, setCooldown] = useState(0);
     const endRef = useRef(null);
 
-    // Busca mensagens a cada 15s, e na montagem
     useEffect(() => {
         if (!propostaId || !token) return;
 
@@ -23,12 +22,11 @@ export default function ConversationThread({
 
         const interval = setInterval(() => {
             fetchMessages();
-        }, 15000); // 15 segundos
+        }, 15000);
 
         return () => clearInterval(interval);
     }, [propostaId, token]);
 
-    // Decrementa cooldown a cada segundo
     useEffect(() => {
         if (cooldown <= 0) return;
         const timer = setInterval(() => {
@@ -37,7 +35,6 @@ export default function ConversationThread({
         return () => clearInterval(timer);
     }, [cooldown]);
 
-    // Scroll automático sempre que conversa mudar
     useEffect(() => {
         if (endRef.current) {
             endRef.current.scrollIntoView({ behavior: "smooth" });
@@ -94,7 +91,6 @@ export default function ConversationThread({
             setNewMessage("");
             setCooldown(COOLDOWN_SECONDS);
 
-            // Opcional: busca mensagens logo após enviar, pra garantir atualização
             await fetchMessages();
         } catch (error) {
             console.error("Falha ao enviar mensagem:", error);

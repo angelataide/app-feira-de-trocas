@@ -55,7 +55,7 @@ function findByOwnerId(userId) {
     return prisma.item.findMany({
         where: {
             usuarioId: userId,
-            status: 'DISPONIVEL', // <-- ADICIONAMOS O FILTRO DE STATUS AQUI
+            status: 'DISPONIVEL',
         },
         include: { usuario: true },
         orderBy: {
@@ -67,7 +67,7 @@ function findByOwnerId(userId) {
 function findAllAvailable() {
     return prisma.item.findMany({
         where: {
-            status: 'DISPONIVEL', // O filtro agora está aqui!
+            status: 'DISPONIVEL',
         },
         include: {
             usuario: { select: { id: true, nome: true, bairro: true } },
