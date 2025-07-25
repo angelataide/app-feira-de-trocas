@@ -32,8 +32,6 @@ export default function MyItemCard({ item, onEdit, onDelete }) {
         }
     };
 
-    console.log(item);
-
     return (
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden group border border-neutral-100 hover:border-primary-500/50 hover:shadow-lg transition-all duration-300">
             <div className="relative aspect-video overflow-hidden">

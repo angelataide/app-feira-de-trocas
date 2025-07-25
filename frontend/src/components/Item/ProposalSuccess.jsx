@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
-import { itemDetalhes } from "../../constants/itemDetalhe";
 
 export default function ProposalSuccess() {
     return (
@@ -11,8 +10,8 @@ export default function ProposalSuccess() {
                     Proposta Enviada!
                 </h2>
                 <p className="text-neutral-500 mb-6">
-                    Sua proposta foi enviada para {itemDetalhes.usuario}. Você
-                    receberá uma notificação quando ela for respondida.
+                    Sua proposta foi enviada para. Você receberá uma notificação
+                    quando ela for respondida.
                 </p>
                 <div className="flex gap-4 justify-center">
                     <Link to="/">

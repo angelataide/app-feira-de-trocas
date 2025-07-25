@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Waves, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
+import Logo from "../../assets/Blue_Modern_Business_Corporate_Logo.png";
 
 export default function Footer() {
     return (
@@ -7,12 +8,6 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                     <div className="col-span-1 md:col-span-2">
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                                <Waves className="w-5 h-5 text-white" />
-                            </div>
-                            <h3 className="text-2xl font-bold">TrocaAí</h3>
-                        </div>
                         <p className="text-neutral-400 mb-4 leading-relaxed max-w-md">
                             Conectando comunidades através da troca consciente e
                             sustentável. Promovendo um futuro mais verde, uma
@@ -45,7 +40,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    to="/cadastrar"
+                                    to="/login/?mode=register"
                                     className="hover:text-white transition-colors"
                                 >
                                     Cadastrar Item
@@ -53,7 +48,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    to="/propostas"
+                                    to="/proposals"
                                     className="hover:text-white transition-colors"
                                 >
                                     Minhas Propostas
@@ -61,7 +56,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    to="/login"
+                                    to="/login/?mode=login"
                                     className="hover:text-white transition-colors"
                                 >
                                     Entrar
@@ -75,7 +70,7 @@ export default function Footer() {
                         <ul className="space-y-2 text-neutral-400">
                             <li>
                                 <Link
-                                    to="/ajuda"
+                                    to="/"
                                     className="hover:text-white transition-colors"
                                 >
                                     Central de Ajuda
@@ -83,7 +78,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    to="/termos"
+                                    to="/"
                                     className="hover:text-white transition-colors"
                                 >
                                     Termos de Uso
@@ -91,7 +86,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    to="/privacidade"
+                                    to="/"
                                     className="hover:text-white transition-colors"
                                 >
                                     Privacidade
@@ -99,7 +94,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    to="/contato"
+                                    to="/"
                                     className="hover:text-white transition-colors"
                                 >
                                     Contato

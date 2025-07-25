@@ -135,13 +135,6 @@ export default function ItemDetalhePage() {
         (meuItem) => meuItem.id !== item.id
     );
 
-    console.group("Debug Dono do Item");
-    console.log("ID do Usuário Logado (do Contexto):", user?.id);
-    console.log("Tipo do user.id:", typeof user?.id);
-    console.log("ID do Dono do Item (da API):", item.usuarioId);
-    console.log("Tipo do item.usuarioId:", typeof item.usuarioId);
-    console.groupEnd();
-
     return (
         <div className="min-h-screen bg-neutral-50 font-sans">
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

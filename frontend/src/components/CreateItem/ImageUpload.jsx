@@ -29,17 +29,7 @@ export default function ImageUpload({ onFileSelected }) {
                 className="hidden"
             />
 
-            <div
-                className="border-2 border-dashed border-neutral-300 rounded-xl p-8 text-center transition-colors hover:border-primary-500 cursor-pointer"
-                onClick={handleClick}
-                onDrop={(e) => {
-                    e.preventDefault();
-                    const file = e.dataTransfer.files[0];
-                    setSelectedFile(file);
-                    if (onFileSelected) onFileSelected(file);
-                }}
-                onDragOver={(e) => e.preventDefault()}
-            >
+            <div className="border-2 border-dashed border-neutral-300 rounded-xl p-8 text-center transition-colors hover:border-primary-500 cursor-pointer">
                 <div className="w-16 h-16 bg-gradient-to-r from-primary-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <Camera className="w-8 h-8 text-white" />
                 </div>

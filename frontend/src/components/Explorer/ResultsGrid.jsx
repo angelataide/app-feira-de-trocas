@@ -2,8 +2,6 @@ import ItemCard from "./ItemCard";
 import { Coins, Lightbulb, Waves } from "lucide-react";
 
 export default function ResultsGrid({ itens }) {
-    console.log("itens:", itens);
-
     return (
         <div>
             <div className="mb-6">
