@@ -9,12 +9,32 @@ import {
     Shirt,
     Edit2,
     Trash2,
+    Monitor,
+    Lamp,
+    Footprints,
+    Volleyball,
+    Watch,
+    Utensils,
+    PenTool,
+    Guitar,
+    Dog,
+    Boxes,
 } from "lucide-react";
 
 const categoriaIcones = {
     Livros: <BookOpen className="w-4 h-4" />,
     Brinquedos: <Bike className="w-4 h-4" />,
     Roupas: <Shirt className="w-4 h-4" />,
+    Eletrônicos: <Monitor className="w-4 h-4" />,
+    Decoração: <Lamp className="w-4 h-4" />,
+    Calçados: <Footprints className="w-4 h-4" />,
+    Esportes: <Volleyball className="w-4 h-4" />,
+    Acessórios: <Watch className="w-4 h-4" />,
+    Cozinha: <Utensils className="w-4 h-4" />,
+    Papelaria: <PenTool className="w-4 h-4" />,
+    Instrumentos: <Guitar className="w-4 h-4" />,
+    Pets: <Dog className="w-4 h-4" />,
+    Outros: <Boxes className="w-4 h-4" />,
 };
 
 export default function MyItemCard({ item, onEdit, onDelete }) {

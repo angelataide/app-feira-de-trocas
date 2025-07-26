@@ -1,11 +1,21 @@
 import {
-    Heart,
-    Star,
-    MapPin,
-    Clock,
-    BookOpen,
     Bike,
+    BookOpen,
+    Boxes,
+    Clock,
+    Dog,
+    Footprints,
+    Guitar,
+    Heart,
+    Lamp,
+    MapPin,
+    Monitor,
+    PenTool,
     Shirt,
+    Star,
+    Utensils,
+    Volleyball,
+    Watch,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -13,6 +23,16 @@ const categoriaIcones = {
     Livros: <BookOpen className="w-4 h-4" />,
     Brinquedos: <Bike className="w-4 h-4" />,
     Roupas: <Shirt className="w-4 h-4" />,
+    Eletrônicos: <Monitor className="w-4 h-4" />,
+    Decoração: <Lamp className="w-4 h-4" />,
+    Calçados: <Footprints className="w-4 h-4" />,
+    Esportes: <Volleyball className="w-4 h-4" />,
+    Acessórios: <Watch className="w-4 h-4" />,
+    Cozinha: <Utensils className="w-4 h-4" />,
+    Papelaria: <PenTool className="w-4 h-4" />,
+    Instrumentos: <Guitar className="w-4 h-4" />,
+    Pets: <Dog className="w-4 h-4" />,
+    Outros: <Boxes className="w-4 h-4" />,
 };
 
 export default function ItemCard({ item }) {

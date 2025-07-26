@@ -38,6 +38,7 @@ async function getItemById(id) {
     if (!item) {
         throw new Error('Item não encontrado.');
     }
+
     return {
         id: item.id,
         titulo: item.titulo,
@@ -98,6 +99,7 @@ async function getAllAvailableItems() {
         }),
         rating: 4.5,
         likes: 10,
+        status: item.status.toLowerCase(),
     }));
 }
 

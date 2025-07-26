@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import useAuth from "../hooks/useAuth";
 import MyItemCard from "../components/MyItemCard/MyItemCard";
 
@@ -130,6 +129,7 @@ export default function MyItemsPage() {
             setIsLoading(false);
             return;
         }
+
         async function fetchMyItems() {
             try {
                 const res = await fetch("http://localhost:3000/api/items/me", {
@@ -146,6 +146,7 @@ export default function MyItemsPage() {
                 setIsLoading(false);
             }
         }
+
         fetchMyItems();
     }, [token]);
 
@@ -162,7 +163,7 @@ export default function MyItemsPage() {
     function updateItem(updatedItem) {
         setItems((prev) =>
             prev.map((item) =>
-                item.id === updatedItem.id ? { ...item, ...updatedItem } : item
+                item.id === updatedItem.id ? updatedItem : item
             )
         );
     }
@@ -178,50 +179,60 @@ export default function MyItemsPage() {
             </p>
         );
     if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
-    if (items.length === 0)
-        return (
-            <p className="text-center mt-10 text-gray-600">
-                Você ainda não cadastrou nenhum item.
-            </p>
-        );
 
     return (
         <div className="min-h-screen bg-neutral-50 font-sans">
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <h2 className="text-4xl font-bold text-neutral-900 mb-6">
-                    Meus Itens
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {items.map((item) => (
-                        <MyItemCard
-                            key={item.id}
-                            item={item}
-                            onEdit={() => openModal(item)}
-                            onDelete={async (id) => {
-                                if (!confirm("Quer mesmo excluir esse item?"))
-                                    return;
-                                try {
-                                    const res = await fetch(
-                                        `http://localhost:3000/api/items/${id}`,
-                                        {
-                                            method: "DELETE",
-                                            headers: {
-                                                Authorization: `Bearer ${token}`,
-                                            },
-                                        }
-                                    );
-                                    if (!res.ok)
-                                        throw new Error(
-                                            "Falha ao deletar item."
-                                        );
-                                    removeItem(id);
-                                } catch (err) {
-                                    alert(err.message);
-                                }
-                            }}
-                        />
-                    ))}
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-neutral-900 mb-2">
+                        Meus Itens
+                    </h2>
+                    <p className="text-neutral-500">
+                        Gerencie os seus itens cadastrados aqui.
+                    </p>
                 </div>
+
+                {items.length === 0 ? (
+                    <p className="mt-10 text-center text-gray-600">
+                        Você ainda não cadastrou nenhum item.
+                    </p>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {items.map((item) => (
+                            <MyItemCard
+                                key={item.id}
+                                item={item}
+                                onEdit={() => openModal(item)}
+                                onDelete={async (id) => {
+                                    if (
+                                        !confirm(
+                                            "Quer mesmo excluir esse item?"
+                                        )
+                                    )
+                                        return;
+                                    try {
+                                        const res = await fetch(
+                                            `http://localhost:3000/api/items/${id}`,
+                                            {
+                                                method: "DELETE",
+                                                headers: {
+                                                    Authorization: `Bearer ${token}`,
+                                                },
+                                            }
+                                        );
+                                        if (!res.ok)
+                                            throw new Error(
+                                                "Falha ao deletar item."
+                                            );
+                                        removeItem(id);
+                                    } catch (err) {
+                                        alert(err.message);
+                                    }
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
 
                 {modalOpen && currentItem && (
                     <EditItemModal

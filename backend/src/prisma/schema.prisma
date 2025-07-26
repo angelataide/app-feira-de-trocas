@@ -66,17 +66,17 @@ model Proposta {
     status          StatusProposta @default(PENDENTE)
     mensagemInicial String?        @map("mensagem_inicial")
 
-    solicitanteId Int     @map("solicitante_id")
+    solicitanteId Int
     solicitante   Usuario @relation("Solicitante", fields: [solicitanteId], references: [id])
 
-    receptorId Int     @map("receptor_id")
+    receptorId Int
     receptor   Usuario @relation("Receptor", fields: [receptorId], references: [id])
 
-    itemOfertadoId Int  @map("itemOfertado_id")
-    itemOfertado   Item @relation("ItemOfertado", fields: [itemOfertadoId], references: [id])
+    itemOfertadoId Int
+    itemOfertado   Item @relation("ItemOfertado", fields: [itemOfertadoId], references: [id], onDelete: Cascade)
 
-    itemDesejadoId Int  @map("itemDesejado_id")
-    itemDesejado   Item @relation("ItemDesejado", fields: [itemDesejadoId], references: [id])
+    itemDesejadoId Int
+    itemDesejado   Item @relation("ItemDesejado", fields: [itemDesejadoId], references: [id], onDelete: Cascade)
 
     mensagens Mensagem[]
 
@@ -91,7 +91,7 @@ model Mensagem {
     conteudo String
 
     propostaId Int
-    proposta   Proposta @relation(fields: [propostaId], references: [id])
+    proposta   Proposta @relation(fields: [propostaId], references: [id], onDelete: Cascade)
 
     autorId Int
     autor   Usuario @relation(fields: [autorId], references: [id])
