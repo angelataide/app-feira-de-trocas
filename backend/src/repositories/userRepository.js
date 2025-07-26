@@ -1,17 +1,13 @@
-// Importo o prisma para acessar o banco de dados
 import prisma from '../database/prismaClient.js';
 
-// Função para criar um novo usuário no banco
 const create = async (data) => prisma.usuario.create({ data });
 
-// Função para buscar um usuário pelo email
 const findByEmail = async (email) =>
     prisma.usuario.findUnique({
         where: { email },
         //
     });
 
-// Função para buscar todos os usuários
 const findAll = async () =>
     prisma.usuario.findMany({
         select: {
@@ -23,7 +19,6 @@ const findAll = async () =>
         },
     });
 
-// Função para buscar um usuário pelo id
 const findById = async (id) =>
     prisma.usuario.findUnique({
         where: { id: parseInt(id, 10) },
@@ -36,7 +31,6 @@ const findById = async (id) =>
         },
     });
 
-// Exporto as funções para serem usadas no service
 export default {
     create,
     findByEmail,

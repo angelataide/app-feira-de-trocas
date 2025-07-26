@@ -1,28 +1,23 @@
-// Importo o Express para criar o servidor HTTP
 import express from 'express';
-// Importo o CORS para permitir requisições de outros domínios
 import cors from 'cors';
+import path from 'path';
 
-// Importo as rotas da aplicação
-import userRoutes from './routes/userRoutes.js'; // Rotas de usuário
-import itemRoutes from './routes/itemRoutes.js'; // Rotas de itens
-import propostaRoutes from './routes/propostaRoutes.js'; // Rotas de propostas
+import userRoutes from './routes/userRoutes.js';
+import itemRoutes from './routes/itemRoutes.js';
+import propostaRoutes from './routes/propostaRoutes.js';
 
-// Crio a aplicação Express
 const app = express();
-// Defino a porta do servidor (usa a variável de ambiente ou 3000)
 const port = process.env.PORT || 3000;
 
-// Middlewares globais
-app.use(cors()); // Permite requisições de outros domínios
-app.use(express.json()); // Permite receber JSON no corpo das requisições
+app.use(cors());
+app.use(express.json());
 
-// Registro das rotas com prefixo /api
-app.use('/api', userRoutes); // Rotas de usuário
-app.use('/api', itemRoutes); // Rotas de itens
-app.use('/api', propostaRoutes); // Rotas de propostas
+app.use('/api/upload', express.static(path.join(process.cwd(), 'upload')));
 
-// Inicia o servidor e exibe mensagem no console
+app.use('/api', userRoutes);
+app.use('/api', itemRoutes);
+app.use('/api', propostaRoutes);
+
 app.listen(port, () => {
     console.log(`🚀 Servidor do TrocaAi rodando na porta ${port}`);
 });

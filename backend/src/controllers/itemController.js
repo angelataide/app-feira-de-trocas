@@ -2,6 +2,12 @@ import itemService from '../services/itemService.js';
 
 const create = async (req, res) => {
     try {
+        if (req.file) {
+            req.body.imagemUrl = `${req.user.id}/${req.file.filename}`;
+        }
+
+        req.body.usuarioId = req.user.id;
+
         const item = await itemService.createItem(req.body);
         res.status(201).json(item);
     } catch (error) {
@@ -9,12 +15,12 @@ const create = async (req, res) => {
     }
 };
 
-const getAll = async (req, res) => {
+const getAll = async (req, res, next) => {
     try {
-        const items = await itemService.getAllItems();
+        const items = await itemService.getAllAvailableItems();
         res.status(200).json(items);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
@@ -45,10 +51,21 @@ const remove = async (req, res) => {
     }
 };
 
+const getMyItems = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const items = await itemService.getItemsByUserId(userId);
+        res.status(200).json(items);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export default {
     create,
     getAll,
     getById,
     update,
     remove,
+    getMyItems,
 };

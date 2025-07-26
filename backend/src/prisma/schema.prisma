@@ -1,97 +1,102 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
-// Configuração da fonte de dados (banco de dados PostgreSQL)
 datasource db {
-  provider = "postgresql"
-  url   = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
-// Enum para os possíveis status de um item.
-// Usar Enum é melhor que String para evitar erros de digitação e garantir consistência.
 enum StatusItem {
-  DISPONIVEL
-  RESERVADO
-  TROCADO
+    DISPONIVEL
+    RESERVADO
+    TROCADO
 }
 
-// Enum para os possíveis status de uma proposta.
 enum StatusProposta {
-  PENDENTE
-  ACEITA
-  RECUSADA
-  CANCELADA
+    PENDENTE
+    ACEITA
+    RECUSADA
+    CANCELADA
 }
 
-// Modelo para a tabela 'usuario'
-// @@map mapeia este modelo para uma tabela chamada 'usuarios' no banco de dados.
 model Usuario {
-  id        Int      @id @default(autoincrement()) // Chave primária
-  nome      String
-  email     String   @unique // O email deve ser único
-  senha     String   // Lembre-se de usar hash para a senha na API!
-  telefone  String?  // O '?' torna o campo opcional (pode ser nulo)
-  
-  // Relações
-  // Um usuário pode ter vários itens
-  itens   Item[]
-  // Um usuário pode criar várias propostas
-  propostasCriadas Proposta[]
+    id       Int     @id @default(autoincrement())
+    nome     String
+    email    String  @unique
+    senha    String
+    telefone String?
+    bairro   String?
 
-  // Boas práticas: registrar quando o usuário foi criado e atualizado
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    itens              Item[]
+    propostasFeitas    Proposta[] @relation("Solicitante")
+    propostasRecebidas Proposta[] @relation("Receptor")
+    mensagens          Mensagem[]
 
-  @@map("usuarios")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("usuarios")
 }
 
-// Modelo para a tabela 'item'
 model Item {
-  id          Int      @id @default(autoincrement())
-  nome        String   @map("nome_item") // @map("...") mapeia para um nome de coluna específico no banco
-  descricao   String?
-  categoria   String
-  status      StatusItem @default(DISPONIVEL) // Usa o Enum StatusItem
+    id          Int        @id @default(autoincrement())
+    titulo      String     @map("titulo")
+    descricao   String?
+    categoria   String
+    condicao    String
+    observacoes String?
+    imagemUrl   String?    @map("imagem_url")
+    status      StatusItem @default(DISPONIVEL)
 
-  // Relação com Usuario (dono do item)
-  // Um item pertence a um único usuário.
-  usuarioId   Int       @map("usuario_id")
-  usuario     Usuario   @relation(fields: [usuarioId], references: [id])
-  
-  // Relações com Proposta
-  // Um item pode ser o item ofertado em várias propostas
-  propostasComoOfertado Proposta[] @relation("ItemOfertado")
-  // Um item pode ser o item desejado em várias propostas
-  propostasComoDesejado Proposta[] @relation("ItemDesejado")
+    usuarioId Int     @map("usuario_id")
+    usuario   Usuario @relation(fields: [usuarioId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  @@map("itens")
+    propostasComoOfertado Proposta[] @relation("ItemOfertado")
+    propostasComoDesejado Proposta[] @relation("ItemDesejado")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("itens")
 }
 
-// Modelo para a tabela 'proposta'
 model Proposta {
-  id        Int      @id @default(autoincrement()) @map("id_prop")
-  status    StatusProposta @default(PENDENTE) // Usa o Enum StatusProposta
+    id              Int            @id @default(autoincrement())
+    status          StatusProposta @default(PENDENTE)
+    mensagemInicial String?        @map("mensagem_inicial")
 
-  // Relação com o Usuário que fez a proposta (solicitante)
-  solicitanteId   Int     @map("solicitante_id")
-  solicitante     Usuario @relation(fields: [solicitanteId], references: [id])
+    solicitanteId Int
+    solicitante   Usuario @relation("Solicitante", fields: [solicitanteId], references: [id])
 
-  // Relação com o Item Ofertado
-  // Usamos @relation("ItemOfertado") para diferenciar esta relação da de baixo,
-  // pois ambas apontam para o mesmo modelo 'Item'.
-  itemOfertadoId Int  @map("itemOfertado_id")
-  itemOfertado   Item @relation("ItemOfertado", fields: [itemOfertadoId], references: [id])
-  
-  // Relação com o Item Desejado
-  itemDesejadoId Int  @map("itemDesejado_id")
-  itemDesejado   Item @relation("ItemDesejado", fields: [itemDesejadoId], references: [id])
+    receptorId Int
+    receptor   Usuario @relation("Receptor", fields: [receptorId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  @@map("propostas")
+    itemOfertadoId Int
+    itemOfertado   Item @relation("ItemOfertado", fields: [itemOfertadoId], references: [id], onDelete: Cascade)
+
+    itemDesejadoId Int
+    itemDesejado   Item @relation("ItemDesejado", fields: [itemDesejadoId], references: [id], onDelete: Cascade)
+
+    mensagens Mensagem[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("propostas")
+}
+
+model Mensagem {
+    id       Int    @id @default(autoincrement())
+    conteudo String
+
+    propostaId Int
+    proposta   Proposta @relation(fields: [propostaId], references: [id], onDelete: Cascade)
+
+    autorId Int
+    autor   Usuario @relation(fields: [autorId], references: [id])
+
+    createdAt DateTime @default(now())
+
+    @@map("mensagens")
 }

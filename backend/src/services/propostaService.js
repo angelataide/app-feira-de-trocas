@@ -1,66 +1,133 @@
-// Importo os repositórios de proposta e item para acessar o banco
+import prisma from '../database/prismaClient.js';
 import propostaRepository from '../repositories/propostaRepository.js';
 import itemRepository from '../repositories/itemRepository.js';
 
-// Função para criar uma nova proposta de troca
-const createProposta = async (propostaData) => {
-    const {
-        solicitanteId, itemOfertadoId, itemDesejadoId
-    } = propostaData;
+const formatarProposta = (proposta) => ({
+    id: proposta.id,
+    status: proposta.status,
+    mensagemInicial: proposta.mensagemInicial,
+    createdAt: proposta.createdAt,
+    solicitante: proposta.solicitante || { id: -1, nome: 'Usuário Deletado' },
+    receptor: proposta.receptor || { id: -1, nome: 'Usuário Deletado' },
+    itemOfertado: proposta.itemOfertado || { id: -1, titulo: 'Item Deletado' },
+    itemDesejado: proposta.itemDesejado || { id: -1, titulo: 'Item Deletado' },
+    mensagens: proposta.mensagens || [],
+});
 
-    // Verifico se o item ofertado existe e está disponível
+async function createProposta(data, solicitanteId) {
+    const { itemOfertadoId, itemDesejadoId, mensagemInicial } = data;
     const itemOfertado = await itemRepository.findById(itemOfertadoId);
-    if (!itemOfertado || itemOfertado.status !== 'DISPONIVEL') {
-        throw new Error(
-            'Item ofertado não está disponível ou não foi encontrado.',
-        );
-    }
-
-    // Verifico se o item desejado existe e está disponível
     const itemDesejado = await itemRepository.findById(itemDesejadoId);
-    if (!itemDesejado || itemDesejado.status !== 'DISPONIVEL') {
+
+    if (!itemOfertado || !itemDesejado) {
+        throw new Error('Um dos itens na proposta não foi encontrado.');
+    }
+    if (itemDesejado.usuarioId === solicitanteId) {
         throw new Error(
-            'Item desejado não está disponível ou não foi encontrado.',
+            'Você não pode fazer uma proposta por um item que já é seu.',
+        );
+    }
+    if (itemOfertado.usuarioId !== solicitanteId) {
+        throw new Error('Você só pode oferecer itens que lhe pertencem.');
+    }
+
+    const propostaData = {
+        solicitanteId,
+        receptorId: itemDesejado.usuarioId,
+        itemOfertadoId,
+        itemDesejadoId,
+        mensagemInicial,
+    };
+    return propostaRepository.create(propostaData);
+}
+
+async function getPropostas(userId) {
+    const propostasDoBanco =
+        await propostaRepository.findPropostasByUser(userId);
+    const propostasFormatadas = propostasDoBanco.map(formatarProposta);
+    const propostasRecebidas = propostasFormatadas.filter(
+        (p) => p.receptor.id === userId,
+    );
+    const propostasEnviadas = propostasFormatadas.filter(
+        (p) => p.solicitante.id === userId,
+    );
+    return { propostasRecebidas, propostasEnviadas };
+}
+
+async function atualizarStatusProposta(propostaId, userId, novoStatus) {
+    const proposta = await propostaRepository.findById(propostaId);
+    if (!proposta) {
+        throw new Error('Proposta não encontrada.');
+    }
+    if (proposta.receptorId !== userId) {
+        throw new Error(
+            'Ação não permitida. Você não é o receptor desta proposta.',
+        );
+    }
+    if (proposta.status !== 'PENDENTE') {
+        throw new Error(
+            `Esta proposta já foi ${proposta.status.toLowerCase()}.`,
         );
     }
 
-    // Garante que o item ofertado pertence ao solicitante
-    if (itemOfertado.usuarioId !== solicitanteId) {
-        throw new Error('O item ofertado não pertence ao usuário solicitante.');
+    if (novoStatus === 'RECUSADA' || novoStatus === 'CANCELADA') {
+        return propostaRepository.updateStatus(propostaId, novoStatus);
     }
 
-    // Impede que o usuário proponha troca com ele mesmo
-    if (itemOfertado.usuarioId === itemDesejado.usuarioId) {
-        throw new Error('Não é possível propor uma troca consigo mesmo.');
+    if (novoStatus === 'ACEITA') {
+        try {
+            const resultado = await prisma.$transaction([
+                prisma.proposta.update({
+                    where: { id: propostaId },
+                    data: { status: 'ACEITA' },
+                }),
+                prisma.item.update({
+                    where: { id: proposta.itemOfertadoId },
+                    data: { status: 'TROCADO' },
+                }),
+                prisma.item.update({
+                    where: { id: proposta.itemDesejadoId },
+                    data: { status: 'TROCADO' },
+                }),
+            ]);
+            return resultado[0];
+        } catch (error) {
+            console.error('Erro na transação ao aceitar proposta:', error);
+            throw new Error(
+                'Não foi possível aceitar a proposta e atualizar os itens.',
+            );
+        }
     }
+}
 
-    // Cria a proposta no banco
-    return propostaRepository.create(propostaData);
-};
+async function getMessagesForProposal(propostaId, userId) {
+    const proposta = await propostaRepository.findById(propostaId);
+    if (!proposta) throw new Error('Proposta não encontrada.');
+    if (proposta.solicitanteId !== userId && proposta.receptorId !== userId) {
+        throw new Error('Acesso não permitido a esta conversa.');
+    }
+    return propostaRepository.findMessagesByProposalId(propostaId);
+}
 
-// Função para responder uma proposta (aceitar, recusar ou cancelar)
-const responderProposta = async (id, status) => {
-    // Busca a proposta pelo id
-    const proposta = await propostaRepository.findById(id);
+async function addMessageToProposal(propostaId, userId, conteudo) {
+    const proposta = await propostaRepository.findById(propostaId);
     if (!proposta) {
         throw new Error('Proposta não encontrada.');
     }
 
-    if (status === 'ACEITA') {
-        // Regra de negócio: Se a proposta for aceita, marca ambos os itens como TROCADO
-        await itemRepository.update(proposta.itemOfertadoId, {
-            status: 'TROCADO',
-        });
-        await itemRepository.update(proposta.itemDesejadoId, {
-            status: 'TROCADO',
-        });
+    if (proposta.solicitanteId !== userId && proposta.receptorId !== userId) {
+        throw new Error(
+            'Ação não permitida. Você não faz parte desta conversa.',
+        );
     }
 
-    // Atualiza o status da proposta
-    return propostaRepository.updateStatus(id, status);
-};
+    return propostaRepository.createMessage(propostaId, userId, conteudo);
+}
 
-// Exporto as funções para serem usadas no controller
 export default {
-    createProposta, responderProposta
+    createProposta,
+    getPropostas,
+    atualizarStatusProposta,
+    getMessagesForProposal,
+    addMessageToProposal,
 };

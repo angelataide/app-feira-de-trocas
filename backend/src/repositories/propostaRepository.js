@@ -1,43 +1,77 @@
-// Importo o prisma para acessar o banco de dados
 import prisma from '../database/prismaClient.js';
 
-// Função para criar uma nova proposta no banco
-const create = async (data) => {
-    const {
-        solicitanteId, itemOfertadoId, itemDesejadoId
-    } = data;
+function create(propostaData) {
     return prisma.proposta.create({
-        data: {
-            solicitanteId,
-            itemOfertadoId,
-            itemDesejadoId,
-        },
+        data: propostaData,
     });
-};
+}
 
-// Função para buscar uma proposta pelo id
-const findById = async (id) =>
-    prisma.proposta.findUnique({
-        where: { id_prop: parseInt(id, 10) }, // Usa o campo id_prop do banco
+function findPropostasByUser(userId) {
+    return prisma.proposta.findMany({
+        where: {
+            OR: [{ solicitanteId: userId }, { receptorId: userId }],
+        },
         include: {
-            solicitante: {
-                select: {
-                    id: true, nome: true
-                }
-            }, // Inclui dados do solicitante
-            itemOfertado: true, // Inclui dados do item ofertado
-            itemDesejado: true, // Inclui dados do item desejado
+            solicitante: { select: { id: true, nome: true } },
+            receptor: { select: { id: true, nome: true } },
+            itemOfertado: {
+                select: { id: true, titulo: true, imagemUrl: true },
+            },
+            itemDesejado: {
+                select: { id: true, titulo: true, imagemUrl: true },
+            },
+            mensagens: {
+                orderBy: { createdAt: 'asc' },
+                include: { autor: { select: { id: true, nome: true } } },
+            },
+        },
+        orderBy: { updatedAt: 'desc' },
+    });
+}
+
+function updateStatus(propostaId, novoStatus) {
+    return prisma.proposta.update({
+        where: { id: propostaId },
+        data: { status: novoStatus },
+    });
+}
+
+function findById(propostaId) {
+    return prisma.proposta.findUnique({
+        where: { id: propostaId },
+    });
+}
+
+function createMessage(propostaId, autorId, conteudo) {
+    return prisma.mensagem.create({
+        data: {
+            conteudo,
+            proposta: { connect: { id: propostaId } },
+            autor: { connect: { id: autorId } },
+        },
+        include: {
+            autor: { select: { id: true, nome: true } },
         },
     });
+}
 
-// Função para atualizar o status de uma proposta
-const updateStatus = async (id, status) =>
-    prisma.proposta.update({
-        where: { id_prop: parseInt(id, 10) },
-        data: { status },
+function findMessagesByProposalId(propostaId) {
+    return prisma.mensagem.findMany({
+        where: { propostaId },
+        include: {
+            autor: { select: { id: true, nome: true } },
+        },
+        orderBy: {
+            createdAt: 'asc',
+        },
     });
+}
 
-// Exporto as funções para serem usadas no service
 export default {
-    create, findById, updateStatus
+    create,
+    findPropostasByUser,
+    updateStatus,
+    findById,
+    createMessage,
+    findMessagesByProposalId,
 };

@@ -1,24 +1,31 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const validarToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(" ")[1]
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
-        return res.status(401).json({ message: "Token não fornecido" })
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res
+            .status(401)
+            .json({ message: 'Token não fornecido ou mal formatado.' });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET_TOKEN, (erro, usuario) => {
-        if (erro) {
-            return res.status(403).json({ message: "Token inválido" });
-        }
+    const token = authHeader.split(' ')[1];
 
-        req.usuario = usuario;
+    if (!token) {
+        return res.status(401).json({ message: 'Token não fornecido.' });
+    }
+
+    try {
+        const decodedPayload = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
+
+        req.user = decodedPayload;
+
         next();
-    });
-}
+    } catch (error) {
+        return res.status(403).json({
+            message: 'Token inválido ou expirado. Faça login novamente.',
+        });
+    }
+};
 
 export default validarToken;

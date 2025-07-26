@@ -1,38 +1,15 @@
-import React from 'react'
-import styled from 'styled-components' //
-import Header from '../components/Header.jsx' // Importa o componente Header
-import HeroSection from '../components/HeroSection.jsx'
-import StatsSection from '../components/StatsSection.jsx'
-import HighlightSection from '../components/HighlightSection.jsx'
-import HowItWorksSection from '../components/HowItWorksSection.jsx'
-import GlobalStyles from '../GlobalStyles.jsx'
+import HeroSection from "../components/HomePage/HeroSection";
+import WhyUsSection from "../components/HomePage/WhyUsSection";
+import HowItWorksSection from "../components/HomePage/HowItWorksSection";
+import Footer from "../components/HomePage/Footer";
 
-const MainContainer = styled.main`
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza todo o conteúdo horizontalmente */
-    justify-content: center; /* Centraliza verticalmente, se necessário */
-    text-align: center;
-    padding: 40px 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto; /* Centraliza o contêiner na tela */
-`
-
-function HomePage() {
+export default function HomePage() {
     return (
         <>
-            <GlobalStyles />
-            <Header />
-            <MainContainer>
-                <HeroSection />
-                <StatsSection />
-                <HighlightSection />
-                <HowItWorksSection />
-            </MainContainer>
+            <HeroSection />
+            <WhyUsSection />
+            <HowItWorksSection />
+            <Footer />
         </>
-    )
+    );
 }
-
-export default HomePage
