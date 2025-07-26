@@ -8,12 +8,13 @@ import ProposalPage from "./pages/ProposalPage.jsx";
 import CreateItemPage from "./pages/CreateItemPage.jsx";
 import MainLayout from "./layout/MainLayout.jsx";
 import MyItemsPage from "./pages/MyItensPage.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 function App() {
     return (
         <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="*" element={<h1>404: Página Não Encontrada</h1>} />
+            <Route path="*" element={<NotFound />} />
 
             <Route element={<MainLayout forceLoggedOut={true} />}>
                 <Route path="/" element={<HomePage />} />
